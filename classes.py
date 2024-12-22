@@ -56,3 +56,18 @@ class Box(MovableTile):
 class Player(MovableTile):
     def __init__(self, coordinateX, coordinateY):
         super().__init__(coordinateX, coordinateY)
+
+
+def classSelector(name, coordinateX, coordinateY):
+    if name == 'wall':
+        return Wall(coordinateX, coordinateY)
+    elif name == 'emptyTile':
+        return EmptyTile(coordinateX, coordinateY)
+    elif name == 'switch':
+        return Switch(coordinateX, coordinateY)
+    elif name == 'box':
+        return Box(coordinateX, coordinateY)
+    elif name == 'player':
+        return Player(coordinateX, coordinateY)
+    else:
+        pass
