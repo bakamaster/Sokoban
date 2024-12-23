@@ -1,45 +1,29 @@
-class Tile:
-    def __init__(self, coordinateX, coordinateY):
-        self._coordinateX = coordinateX
-        self._coordinateY = coordinateY
-
-    def coordinateX(self):
-        return self._coordinateX
-
-    def coordinateY(self):
-        return self._coordinateY
-
-
-class NonMovableTile(Tile):
-    def __init__(self, coordinateX, coordinateY):
-        super().__init__(coordinateX, coordinateY)
-
+class NonMovableTile():
     def isMovable(self):
         return False
 
 
-class MovableTile(Tile):
-    def __init__(self, coordinateX, coordinateY):
-        super().__init__(coordinateX, coordinateY)
-
+class MovableTile():
     def isMovable(self):
         return True
 
 
 class Wall(NonMovableTile):
-    def __init__(self, coordinateX, coordinateY):
-        super().__init__(coordinateX, coordinateY)
+    def __str__(self):
+        return 'wall'
 
 
-class EmptyTile(Tile):
-    def __init__(self, coordinateX, coordinateY):
-        super().__init__(coordinateX, coordinateY)
+class EmptyTile():
+    def __str__(self):
+        return 'empty tile'
 
 
 class Switch(NonMovableTile):
-    def __init__(self, coordinateX, coordinateY):
-        super().__init__(coordinateX, coordinateY)
+    def __init__(self):
         self._isActive = False
+
+    def __str__(self):
+        return 'switch'
 
     def isActive(self):
         return self._isActive
@@ -49,13 +33,13 @@ class Switch(NonMovableTile):
 
 
 class Box(MovableTile):
-    def __init__(self, coordinateX, coordinateY):
-        super().__init__(coordinateX, coordinateY)
+    def __str__(self):
+        return 'box'
 
 
 class Player(MovableTile):
-    def __init__(self, coordinateX, coordinateY):
-        super().__init__(coordinateX, coordinateY)
+    def __str__(self):
+        return 'player'
 
 
 def classSelector(name, coordinateX, coordinateY):
