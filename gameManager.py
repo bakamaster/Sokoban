@@ -1,23 +1,37 @@
-from classes import EmptyTile
-from levelLoader import loadLevel
+from classes import EmptyTile, Box, Player
 board = {}
 
 
-def move(coordinateX, coordinateY, direction):
+def movePlayer(coordinateX, coordinateY, direction):
     originTile = board[(coordinateX, coordinateY)]
-    finaTile = (coordinateX + direction[0], coordinateY + direction[1])
-    if str(board[finaTile]) == 'empty space':
-        board[finaTile] = originTile
+    finalTile = (coordinateX + direction[0], coordinateY + direction[1])
+    if str(board[finalTile]) == 'empty space':
+        board[finalTile] = originTile
         board[(coordinateX, coordinateY)] = EmptyTile()
-    elif not str(board[finaTile]) == 'wall':
+    elif str(board[finalTile]) == 'wall':
+        pass
+    elif str(board[finalTile]) == 'box':
+        moveBox(finalTile, direction)
+    elif str(board[finalTile]) == 'switch':
+        moveSwitch('player', finalTile, direction)
+
+
+def moveBox(originTile, direction):
+    finalTile = (originTile[0] + direction[0], originTile[1] + direction[1])
+    if str(board[finalTile]) == 'wall':
         return False
-    elif str(board[finaTile]) == 'box':
-        if not move(finaTile[0], finaTile[1], direction):
-            pass
-        else:
-            move(finaTile[0], finaTile[1], direction)
-    elif str(board[finaTile]) == 'switch':
-        if board[finaTile].isActive():
-            pass
-        else:
-            board[finaTile] = originTile
+    elif str(board[finalTile]) == 'empty space':
+        board[finalTile] = Box()
+        board[originTile] = Player()
+        return True
+    elif str(board[finalTile]) == 'box':
+        isMoved = moveBox(originTile, direction)
+        if isMoved:
+            board[finalTile] = Box()
+            board[originTile] = Player()
+    elif str(board[finalTile]) == 'switch':
+        moveSwitch('box', finalTile, direction)
+
+
+def moveSwitch(type, originTile, direction):
+    pass
