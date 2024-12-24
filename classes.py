@@ -33,11 +33,31 @@ class Switch(NonMovableTile):
 
 
 class Box(MovableTile):
+    def __init__(self):
+        super().__init__()
+        self._isOnSwitch = False
+
+    def isOnSwitch(self):
+        return self._isOnSwitch
+
+    def changeIsOnSwitch(self, state):
+        self._isOnSwitch = state
+
     def __str__(self):
         return 'box'
 
 
 class Player(MovableTile):
+    def __init__(self):
+        super().__init__()
+        self._isOnSwitch = False
+
+    def isOnSwitch(self):
+        return self._isOnSwitch
+
+    def changeIsOnSwitch(self, state):
+        self._isOnSwitch = state
+
     def __str__(self):
         return 'player'
 
