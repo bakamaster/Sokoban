@@ -1,6 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication, QWidget, QMainWindow, QLabel, QSizePolicy, QDialog
-from ui_customPathDialog import Ui_customPathDialog
+from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QSizePolicy, QFileDialog
 from ui_sokoban import Ui_MainWindow
 from levelLoader import loadLevel
 import sys
@@ -52,20 +51,13 @@ class SokobanWindow(QMainWindow):
             self.ui.boardLayout.addWidget(tile, coordinateX, coordinteY)
 
     def loadCustomLevel(self):
-        window = customPathDialog()
-        if window.exec() == QDialog.accepted():
-            pass
+        path, fileFilter = QFileDialog.getOpenFileName(self,
+                                                       "Wybierz plik poziomu",
+                                                       "Pliki JSON (*.json)")
+        return path
 
     def updateLevelInfo(self):
         self.ui.levelInfo.setText(f'Level {self._currentLevel+1}')
-
-
-class customPathDialog(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.ui = Ui_customPathDialog()
-        self.ui.setupUi(self)
-
 
 
 def guiMain(args):
