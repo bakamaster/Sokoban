@@ -16,9 +16,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
-    QLabel, QLayout, QMainWindow, QMenu,
-    QMenuBar, QSizePolicy, QStatusBar, QVBoxLayout,
+from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLabel,
+    QLayout, QMainWindow, QMenu, QMenuBar,
+    QSizePolicy, QSpacerItem, QStatusBar, QVBoxLayout,
     QWidget)
 
 class Ui_MainWindow(object):
@@ -48,11 +48,18 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
         self.levelInfo = QLabel(self.centralwidget)
         self.levelInfo.setObjectName(u"levelInfo")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Minimum)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.levelInfo.sizePolicy().hasHeightForWidth())
+        self.levelInfo.setSizePolicy(sizePolicy1)
 
         self.horizontalLayout.addWidget(self.levelInfo)
 
         self.moveInfo = QLabel(self.centralwidget)
         self.moveInfo.setObjectName(u"moveInfo")
+        sizePolicy1.setHeightForWidth(self.moveInfo.sizePolicy().hasHeightForWidth())
+        self.moveInfo.setSizePolicy(sizePolicy1)
         self.moveInfo.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout.addWidget(self.moveInfo)
@@ -60,17 +67,17 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
-        self.frame = QFrame(self.centralwidget)
-        self.frame.setObjectName(u"frame")
-        sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
-        self.frame.setSizePolicy(sizePolicy)
-        self.frame.setFrameShape(QFrame.StyledPanel)
-        self.frame.setFrameShadow(QFrame.Raised)
-
-        self.verticalLayout.addWidget(self.frame)
-
 
         self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
+
+        self.boardLayout = QGridLayout()
+        self.boardLayout.setObjectName(u"boardLayout")
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.boardLayout.addItem(self.verticalSpacer, 0, 0, 1, 1)
+
+
+        self.gridLayout.addLayout(self.boardLayout, 1, 0, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)

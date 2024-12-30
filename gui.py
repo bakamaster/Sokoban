@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication, QWidget, QMainWindow, QHBoxLayout, QVBoxLayout, QLabel, QGridLayout
-from levelLoader import loadLevel
+from PySide6.QtWidgets import QApplication, QWidget, QMainWindow, QLabel, QSizePolicy
 from ui_sokoban import Ui_MainWindow
+from levelLoader import loadLevel
 import sys
 
 
@@ -16,7 +16,6 @@ class SokobanWindow(QMainWindow):
         self._levelpath = './level{levelNumber}.json'
         self.ui.resetLevel.triggered.connect(self.createBoard)
         self.ui.loadCustomLevel.triggered.connect(self.loadCustomLevel)
-        self.clearBoard()
         self.loadLevelToBoard()
 
     def loadLevelToBoard(self, path=None):
@@ -28,10 +27,12 @@ class SokobanWindow(QMainWindow):
         self.createBoard()
 
     def clearBoard(self):
-        self._boardLayout = QGridLayout(self.ui.frame)
+        while self.ui.boardLayout.count():
+            child = self.ui.boardLayout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
 
     def createBoard(self):
-        self.clearBoard()
         for (coordinateX, coordinteY), tile in self._board.items():
             tile = QLabel()
             if str(tile) == 'wall':
@@ -44,8 +45,9 @@ class SokobanWindow(QMainWindow):
                 tile.setStyleSheet('background-color: green;')
             elif str(tile) == 'empty tile':
                 tile.setStyleSheet('background-color: white;')
-            tile.setFixedSize(50, 50)
-            self._boardLayout.addWidget(tile, coordinateX, coordinteY)
+            tile.setSizePolicy(QSizePolicy.Policy.Expanding,
+                               QSizePolicy.Policy.Expanding)
+            self.ui.boardLayout.addWidget(tile, coordinateX, coordinteY)
 
     def loadCustomLevel(self):
         pass
