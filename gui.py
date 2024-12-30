@@ -33,17 +33,18 @@ class SokobanWindow(QMainWindow):
                 child.widget().deleteLater()
 
     def createBoard(self):
-        for (coordinateX, coordinteY), tile in self._board.items():
+        for (coordinateX, coordinteY), tileType in self._board.items():
             tile = QLabel()
-            if str(tile) == 'wall':
+            tileType = str(tileType)
+            if tileType == 'wall':
                 tile.setStyleSheet('background-color: orange;')
-            elif str(tile) == 'box':
+            elif tileType == 'box':
                 tile.setStyleSheet('background-color: yellow;')
-            elif str(tile) == 'switch':
+            elif tileType == 'switch':
                 tile.setStyleSheet('background-color: red;')
-            elif str(tile) == 'player':
+            elif tileType == 'player':
                 tile.setStyleSheet('background-color: green;')
-            elif str(tile) == 'empty tile':
+            elif tileType == 'empty tile':
                 tile.setStyleSheet('background-color: white;')
             tile.setSizePolicy(QSizePolicy.Policy.Expanding,
                                QSizePolicy.Policy.Expanding)
