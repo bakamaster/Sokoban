@@ -62,16 +62,16 @@ class Player(MovableTile):
         return 'player'
 
 
-def classSelector(name, coordinateX, coordinateY):
+def classSelector(name):
     if name == 'wall':
-        return Wall(coordinateX, coordinateY)
+        return Wall()
     elif name == 'emptyTile':
-        return EmptyTile(coordinateX, coordinateY)
+        return EmptyTile()
     elif name == 'switch':
-        return Switch(coordinateX, coordinateY)
+        return Switch()
     elif name == 'box':
-        return Box(coordinateX, coordinateY)
+        return Box()
     elif name == 'player':
-        return Player(coordinateX, coordinateY)
+        return Player()
     else:
         pass
