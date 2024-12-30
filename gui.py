@@ -13,13 +13,14 @@ class SokobanWindow(QMainWindow):
         self._board = {}
         self._numberOfSwitches = 0
         self._currentLevel = 0
+        self._customPath = None
         self._levelpath = './level{levelNumber}.json'
         self.ui.resetLevel.triggered.connect(self.createBoard)
         self.ui.loadCustomLevel.triggered.connect(self.loadCustomLevel)
         self.loadLevelToBoard()
 
-    def loadLevelToBoard(self, path=None):
-        if path is None:
+    def loadLevelToBoard(self):
+        if self._customPath is None:
             path = self._levelpath.format(levelNumber=self._currentLevel)
         board, numberOfSwitches = loadLevel(path)
         self._board = board
@@ -54,7 +55,7 @@ class SokobanWindow(QMainWindow):
         path, fileFilter = QFileDialog.getOpenFileName(self,
                                                        "Wybierz plik poziomu",
                                                        "Pliki JSON (*.json)")
-        return path
+        self._customPath = path
 
     def updateLevelInfo(self):
         self.ui.levelInfo.setText(f'Level {self._currentLevel+1}')
