@@ -1,7 +1,8 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QSizePolicy, QFileDialog
+from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QSizePolicy, QFileDialog, QMessageBox
 from ui_sokoban import Ui_MainWindow
 from levelLoader import loadLevel
+from gameManager import chooseMovementOption
 import sys
 
 
@@ -11,11 +12,14 @@ class SokobanWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self._board = {}
+        self._originalBoard = {}
         self._numberOfSwitches = 0
         self._currentLevel = 0
         self._customPath = None
         self._levelpath = './level{levelNumber}.json'
-        self.ui.resetLevel.triggered.connect(self.createBoard)
+        self._playerPosition = None
+        self.ui.levelInfo.setText(f'Level {self._currentLevel+1}')
+        self.ui.resetLevel.triggered.connect(self.restartLevel)
         self.ui.loadCustomLevel.triggered.connect(self.loadCustomLevel)
         self.loadLevelToBoard()
 
@@ -24,7 +28,12 @@ class SokobanWindow(QMainWindow):
             path = self._levelpath.format(levelNumber=self._currentLevel)
         board, numberOfSwitches = loadLevel(path)
         self._board = board
+        self._originalBoard = board
         self._numberOfSwitches = numberOfSwitches
+        self.createBoard()
+
+    def restartLevel(self):
+        self._board = self._originalBoard
         self.createBoard()
 
     def clearBoard(self):
@@ -45,6 +54,7 @@ class SokobanWindow(QMainWindow):
                 tile.setStyleSheet('background-color: red;')
             elif tileType == 'player':
                 tile.setStyleSheet('background-color: green;')
+                self._playerPosition = (coordinateX, coordinteY)
             elif tileType == 'empty tile':
                 tile.setStyleSheet('background-color: white;')
             tile.setSizePolicy(QSizePolicy.Policy.Expanding,
@@ -59,6 +69,40 @@ class SokobanWindow(QMainWindow):
 
     def updateLevelInfo(self):
         self.ui.levelInfo.setText(f'Level {self._currentLevel+1}')
+
+    def keyPressEvent(self, event):
+        keyDirections = {
+            Qt.Key.Key_W: (-1, 0),
+            Qt.Key.Key_A: (0, -1),
+            Qt.Key.Key_S: (1, 0),
+            Qt.Key.Key_D: (0, 1)
+            }
+        if event.key() in keyDirections:
+            self._board, self._numberOfSwitches = chooseMovementOption(
+                self._playerPosition,
+                keyDirections[event.key()],
+                self._board,
+                self._numberOfSwitches
+                )
+            self.createBoard()
+            if self._numberOfSwitches == 0:
+                self.nextLevel()
+
+    def newLevel(self):
+        if self._customPath is None:
+            self._currentLevel += 1
+            self.updateLevelInfo()
+            self.loadLevelToBoard()
+        completedLevelDialog = QMessageBox('Level completed')
+        completedLevelDialog.setText(f'Congratulations!!! \
+                                     You completed level {self._currentLevel}')
+        completedLevelDialog.exec()
+
+    def GameFinished():
+        gameFinishedDialog = QMessageBox('Game completed')
+        gameFinishedDialog.setText('Congratulations!!! \
+                                   You completed the game')
+        gameFinishedDialog.exec()
 
 
 def guiMain(args):

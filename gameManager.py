@@ -3,15 +3,20 @@ board = {}
 numberOfSwitches = 0
 
 
-def chooseMovementOption(position, direction):
+def chooseMovementOption(position, direction, guiBoard, guiNumberOfSwitches):
+    global board
+    global numberOfSwitches
+    board = guiBoard
+    numberOfSwitches = guiNumberOfSwitches
     if board[position].isOnSwitch():
         movePlayerFromSwitch(position, direction)
     else:
         movePlayerFromEmptySpace(position, direction)
+    return board, numberOfSwitches
 
 
 def movePlayerFromEmptySpace(position, direction):
-    originTile = board[(position[0], position[1])]
+    originTile = board[position]
     finalTile = (position[0] + direction[0], position[1] + direction[1])
     if str(board[finalTile]) == 'empty tile':
         board[finalTile] = originTile
@@ -38,14 +43,16 @@ def moveBoxFromEmptySpace(originTile, direction):
         moveBoxToEmptySpace(originTile, finalTile, False)
     elif str(board[finalTile]) == 'box':
         if not board[finalTile].isOnSwitch():
-            isMoved = moveBoxFromEmptySpace(originTile, direction)
-            if isMoved:
+            if moveBoxFromEmptySpace(finalTile, direction):
                 moveBoxToEmptySpace(originTile, finalTile, False)
             else:
                 return False
         else:
             moveBoxFromSwitch(finalTile, direction)
     elif str(board[finalTile]) == 'switch':
+        startingTile = (originTile[0] - direction[0],
+                        originTile[1] - direction[1])
+        board[startingTile] = EmptyTile()
         numberOfSwitches += 1
         board[originTile] = Player()
         board[finalTile] = Box()
@@ -81,8 +88,7 @@ def moveBoxFromSwitch(originTile, direction):
         numberOfSwitches -= 1
     elif str(board[finalTile]) == 'box':
         if not board[finalTile].isOnSwitch():
-            isMoved = moveBoxFromEmptySpace(originTile, direction)
-            if isMoved:
+            if moveBoxFromEmptySpace(finalTile, direction):
                 moveBoxToEmptySpace(originTile, finalTile, True)
                 numberOfSwitches -= 1
             else:
@@ -98,6 +104,8 @@ def moveBoxFromSwitch(originTile, direction):
 
 
 def moveBoxToEmptySpace(originTile, finalTile, isOnSwitch):
+    startingTile = (2*originTile[0]-finalTile[0], 2*originTile[1]-finalTile[1])
+    board[startingTile] = EmptyTile()
     board[finalTile] = Box()
     board[originTile] = Player()
     if isOnSwitch:

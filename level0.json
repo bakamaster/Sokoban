@@ -1,6 +1,10 @@
 [
-    ["wall", "wall", "wall", "wall"],
-    ["wall", "emptyTile", "box", "wall"],
-    ["wall", "switch", "emptyTile", "wall"],
-    ["wall", "wall", "wall", "wall"]
+    ["wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall"],
+    ["wall", "emptyTile", "emptyTile", "box", "switch", "emptyTile", "emptyTile", "wall"],
+    ["wall", "box", "emptyTile", "emptyTile", "emptyTile", "box", "emptyTile", "wall"],
+    ["wall", "emptyTile", "player", "emptyTile", "box", "switch", "emptyTile", "wall"],
+    ["wall", "switch", "emptyTile", "box", "emptyTile", "emptyTile", "emptyTile", "wall"],
+    ["wall", "emptyTile", "emptyTile", "emptyTile", "emptyTile", "box", "emptyTile", "wall"],
+    ["wall", "emptyTile", "switch", "emptyTile", "emptyTile", "emptyTile", "emptyTile", "wall"],
+    ["wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall"]
 ]

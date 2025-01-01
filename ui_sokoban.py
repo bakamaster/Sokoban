@@ -53,6 +53,9 @@ class Ui_MainWindow(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.levelInfo.sizePolicy().hasHeightForWidth())
         self.levelInfo.setSizePolicy(sizePolicy1)
+        font = QFont()
+        font.setPointSize(18)
+        self.levelInfo.setFont(font)
 
         self.horizontalLayout.addWidget(self.levelInfo)
 
