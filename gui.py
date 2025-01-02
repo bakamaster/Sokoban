@@ -87,7 +87,7 @@ class SokobanWindow(QMainWindow):
                 )
             self.createBoard()
             if self._numberOfSwitches == 0:
-                self.nextLevel()
+                self.newLevel()
 
     def newLevel(self):
         if self._customPath is None:
