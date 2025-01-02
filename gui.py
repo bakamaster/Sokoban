@@ -90,11 +90,13 @@ class SokobanWindow(QMainWindow):
                 self.newLevel()
 
     def newLevel(self):
+        self.clearBoard()
         if self._customPath is None:
             self._currentLevel += 1
             self.updateLevelInfo()
             self.loadLevelToBoard()
-        completedLevelDialog = QMessageBox('Level completed')
+        completedLevelDialog = QMessageBox()
+        completedLevelDialog.setWindowTitle('Level completed')
         completedLevelDialog.setText(f'Congratulations!!! \
                                      You completed level {self._currentLevel}')
         completedLevelDialog.exec()
