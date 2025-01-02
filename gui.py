@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QSizePolicy, QFileDialog, QMessageBox
 from ui_sokoban import Ui_MainWindow
+from copy import deepcopy
 from levelLoader import loadLevel
 from gameManager import chooseMovementOption
 import sys
@@ -28,12 +29,12 @@ class SokobanWindow(QMainWindow):
             path = self._levelpath.format(levelNumber=self._currentLevel)
         board, numberOfSwitches = loadLevel(path)
         self._board = board
-        self._originalBoard = board
+        self._originalBoard = deepcopy(board)
         self._numberOfSwitches = numberOfSwitches
         self.createBoard()
 
     def restartLevel(self):
-        self._board = self._originalBoard
+        self._board = deepcopy(self._originalBoard)
         self.createBoard()
 
     def clearBoard(self):
