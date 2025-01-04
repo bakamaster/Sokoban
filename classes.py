@@ -1,14 +1,9 @@
-class NonMovableTile():
-    def isMovable(self):
-        return False
+class TileTypeError(Exception):
+    def __init__(self, name):
+        super().__init__(f'Incorrect tile name- {name}')
 
 
-class MovableTile():
-    def isMovable(self):
-        return True
-
-
-class Wall(NonMovableTile):
+class Wall():
     def __str__(self):
         return 'wall'
 
@@ -18,7 +13,7 @@ class EmptyTile():
         return 'empty tile'
 
 
-class Switch(NonMovableTile):
+class Switch():
     def __init__(self):
         self._isActive = False
 
@@ -32,7 +27,7 @@ class Switch(NonMovableTile):
         self._isActive = state
 
 
-class Box(MovableTile):
+class Box():
     def __init__(self):
         super().__init__()
         self._isOnSwitch = False
@@ -47,7 +42,7 @@ class Box(MovableTile):
         return 'box'
 
 
-class Player(MovableTile):
+class Player():
     def __init__(self):
         super().__init__()
         self._isOnSwitch = False
@@ -74,4 +69,4 @@ def classSelector(name):
     elif name == 'player':
         return Player()
     else:
-        pass
+        TileTypeError(name)

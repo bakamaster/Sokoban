@@ -1,5 +1,6 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QSizePolicy, QFileDialog, QMessageBox
+from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QSizePolicy
+from PySide6.QtWidgets import QFileDialog, QMessageBox
 from ui_sokoban import Ui_MainWindow
 from copy import deepcopy
 from levelLoader import loadLevel
@@ -44,6 +45,7 @@ class SokobanWindow(QMainWindow):
                 child.widget().deleteLater()
 
     def createBoard(self):
+        #add color to classes
         for (coordinateX, coordinteY), tileType in self._board.items():
             tile = QLabel()
             tileType = str(tileType)
