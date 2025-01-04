@@ -33,8 +33,8 @@ def loadLevel(path):
     numberOfSwitches = 0
     coordinateX = 0
     try:
-        with open(path, 'r') as file_handle:
-            data = json.load(file_handle)
+        with open(path, 'r') as fileHandle:
+            data = json.load(fileHandle)
             for row in data:
                 coordinateY = 0
                 for tile in row:
@@ -43,6 +43,12 @@ def loadLevel(path):
                     board[(coordinateX, coordinateY)] = classSelector(tile)
                     coordinateY += 1
                 coordinateX += 1
+        testBoardCorrection(
+            board,
+            coordinateX-1,
+            coordinateY-1,
+            numberOfSwitches
+            )
     except FileNotFoundError:
         raise LevelFileNotFound(path)
     except PermissionError:
@@ -51,7 +57,7 @@ def loadLevel(path):
         raise LevelFileIncorrect()
     except Exception as e:
         print(f'unexpected exception {e}')
-    testBoardCorrection(board, coordinateX, coordinateY)
+
     return board, numberOfSwitches
 
 
