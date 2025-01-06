@@ -31,18 +31,18 @@ class IncorrctNumberOfSwitches(Exception):
 def loadLevel(path):
     board = {}
     numberOfSwitches = 0
-    coordinateX = 0
+    coordinateY = 0
     try:
         with open(path, 'r') as fileHandle:
             data = json.load(fileHandle)
             for row in data:
-                coordinateY = 0
+                coordinateX = 0
                 for tile in row:
                     if tile == 'switch':
                         numberOfSwitches += 1
                     board[(coordinateX, coordinateY)] = classSelector(tile)
-                    coordinateY += 1
-                coordinateX += 1
+                    coordinateX += 1
+                coordinateY += 1
         testBoardCorrection(
             board,
             coordinateX-1,

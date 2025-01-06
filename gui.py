@@ -48,7 +48,7 @@ class SokobanWindow(QMainWindow):
 
     def createBoard(self):
         #add color to classes
-        for (coordinateX, coordinteY), tileType in self._board.items():
+        for (coordinateX, coordinateY), tileType in self._board.items():
             tile = QLabel()
             tileType = str(tileType)
             if tileType == 'wall':
@@ -59,12 +59,12 @@ class SokobanWindow(QMainWindow):
                 tile.setStyleSheet('background-color: red;')
             elif tileType == 'player':
                 tile.setStyleSheet('background-color: green;')
-                self._playerPosition = (coordinateX, coordinteY)
+                self._playerPosition = (coordinateX, coordinateY)
             elif tileType == 'empty tile':
                 tile.setStyleSheet('background-color: white;')
             tile.setSizePolicy(QSizePolicy.Policy.Expanding,
                                QSizePolicy.Policy.Expanding)
-            self.ui.boardLayout.addWidget(tile, coordinateX, coordinteY)
+            self.ui.boardLayout.addWidget(tile, coordinateY, coordinateX)
 
     def loadCustomLevel(self):
         path, fileFilter = QFileDialog.getOpenFileName(self,
@@ -77,10 +77,10 @@ class SokobanWindow(QMainWindow):
 
     def keyPressEvent(self, event):
         keyDirections = {
-            Qt.Key.Key_W: (-1, 0),
-            Qt.Key.Key_A: (0, -1),
-            Qt.Key.Key_S: (1, 0),
-            Qt.Key.Key_D: (0, 1)
+            Qt.Key.Key_W: (0, -1),
+            Qt.Key.Key_A: (-1, 0),
+            Qt.Key.Key_S: (0, 1),
+            Qt.Key.Key_D: (1, 0)
             }
         if event.key() in keyDirections:
             self._board, self._numberOfSwitches = chooseMovementOption(

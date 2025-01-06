@@ -109,8 +109,8 @@ def testMoveBoxFromSwitch():
 def testLoadFromFile():
     testFilePath = './jsonTestFile'
     boardForFile = [["wall", "wall", "wall", "wall", "wall"],
-                    ["wall", "empty tile", "switch", "box", "wall"],
-                    ["wall", "player", "empty tile", "box", "wall"],
+                    ["wall", "emptyTile", "switch", "box", "wall"],
+                    ["wall", "player", "emptyTile", "box", "wall"],
                     ["wall", "wall", "wall", "wall", "wall"]]
     with open(testFilePath, 'w') as fileHandle:
         json.dump(boardForFile, fileHandle)
