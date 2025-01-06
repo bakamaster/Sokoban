@@ -28,6 +28,8 @@ class SokobanWindow(QMainWindow):
     def loadLevelToBoard(self):
         if self._customPath is None:
             path = self._levelpath.format(levelNumber=self._currentLevel)
+        else:
+            path = self._customPath
         board, numberOfSwitches = loadLevel(path)
         self._board = board
         self._originalBoard = deepcopy(board)

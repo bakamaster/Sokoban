@@ -1,5 +1,5 @@
 import json
-from classes import classSelector
+from classes import classSelector, TileTypeError
 
 
 class LevelFileNotFound(Exception):
@@ -17,7 +17,7 @@ class LevelFileIncorrect(Exception):
         super().__init__("Level file is not in a corrct JSON format")
 
 
-class IncorrectBoard(Exception):
+class IncorrectBoard(TileTypeError):
     def __init__(self, coordinates):
         super().__init__(f'Board is incorrect, outer tiles are not walls,\
                           check tile {coordinates}')

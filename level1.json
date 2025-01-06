@@ -1,6 +1,7 @@
 [
     ["wall", "wall", "wall", "wall", "wall"],
-    ["wall", "empty tile", "switch", "box", "wall"],
-    ["wall", "player", "empty tile", "box", "wall"],
+    ["wall", "emptyTile", "switch", "box", "wall"],
+    ["wall", "player", "emptyTile", "box", "wall"],
+    ["wall", "emptyTile", "emptyTile", "emptyTile", "wall"],
     ["wall", "wall", "wall", "wall", "wall"]
 ]
