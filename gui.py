@@ -50,18 +50,9 @@ class SokobanWindow(QMainWindow):
         #add color to classes
         for (coordinateX, coordinateY), tileType in self._board.items():
             tile = QLabel()
-            tileType = str(tileType)
-            if tileType == 'wall':
-                tile.setStyleSheet('background-color: orange;')
-            elif tileType == 'box':
-                tile.setStyleSheet('background-color: yellow;')
-            elif tileType == 'switch':
-                tile.setStyleSheet('background-color: red;')
-            elif tileType == 'player':
-                tile.setStyleSheet('background-color: green;')
+            tile.setStyleSheet(f'background-color: {tileType.getColor()};')
+            if str(tileType) == 'player':
                 self._playerPosition = (coordinateX, coordinateY)
-            elif tileType == 'empty tile':
-                tile.setStyleSheet('background-color: white;')
             tile.setSizePolicy(QSizePolicy.Policy.Expanding,
                                QSizePolicy.Policy.Expanding)
             self.ui.boardLayout.addWidget(tile, coordinateY, coordinateX)
