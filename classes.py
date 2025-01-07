@@ -2,12 +2,15 @@ from PySide6.QtWidgets import QMessageBox
 
 
 class TileTypeError(Exception):
-    def __init__(self, name):
+    def __init__(self, name, showMessage=True):
         super().__init__(f'Incorrect tile name- {name}')
-        errorDialog = QMessageBox()
-        errorDialog.setWindowTitle("Incorrect Board")
-        errorDialog.setText("The board you were trying to load has incorrect\
-                             structure, it may not work as intended!")
+        if showMessage:
+            errorDialog = QMessageBox()
+            errorDialog.setWindowTitle("Incorrect Board")
+            errorDialog.setText("The board you were trying to load"
+                                "has incorrect structure, it may not "
+                                "work as intended!")
+            errorDialog.exec()
 
 
 class Wall():
@@ -83,7 +86,7 @@ class Player():
         return 'player'
 
 
-def classSelector(name):
+def classSelector(name, showMessage=True):
     if name == 'wall':
         return Wall()
     elif name == 'emptyTile':
@@ -95,4 +98,4 @@ def classSelector(name):
     elif name == 'player':
         return Player()
     else:
-        raise TileTypeError(name)
+        raise TileTypeError(name, showMessage)

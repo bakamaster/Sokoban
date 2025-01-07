@@ -1,5 +1,6 @@
 import json
-from classes import classSelector, TileTypeError
+from classes import classSelector
+from PySide6.QtWidgets import QMessageBox
 
 
 class LevelFileNotFound(Exception):
@@ -17,10 +18,17 @@ class LevelFileIncorrect(Exception):
         super().__init__("Level file is not in a corrct JSON format")
 
 
-class IncorrectBoard(TileTypeError):
-    def __init__(self, coordinates):
+class IncorrectBoard(Exception):
+    def __init__(self, coordinates, showMessage=True):
         super().__init__(f'Board is incorrect, outer tiles are not walls,\
                           check tile {coordinates}')
+        if showMessage:
+            errorDialog = QMessageBox()
+            errorDialog.setWindowTitle("Incorrect Board")
+            errorDialog.setText("The board you were trying to load"
+                                "has incorrect structure, it may not "
+                                "work as intended!")
+            errorDialog.exec()
 
 
 class IncorrctNumberOfSwitches(Exception):
@@ -43,7 +51,7 @@ def loadLevel(path):
                     board[(coordinateX, coordinateY)] = classSelector(tile)
                     coordinateX += 1
                 coordinateY += 1
-        testBoardCorrection(
+        BoardCorrectionValidation(
             board,
             coordinateX-1,
             coordinateY-1,
@@ -56,12 +64,13 @@ def loadLevel(path):
     except json.JSONDecodeError:
         raise LevelFileIncorrect()
     except Exception as e:
-        print(f'unexpected exception {e}')
+        print(f'Unexpected exception {e}')
 
     return board, numberOfSwitches
 
 
-def testBoardCorrection(board: dict, maxX, maxY, numberOfSwitches):
+def BoardCorrectionValidation(board: dict, maxX, maxY,
+                              numberOfSwitches, showMessage=True):
     for (coordinateX, coordinateY), tile in board.items():
         tileType = str(tile)
         if (
@@ -73,6 +82,6 @@ def testBoardCorrection(board: dict, maxX, maxY, numberOfSwitches):
                 )
             and tileType != 'wall'
         ):
-            raise IncorrectBoard((coordinateX, coordinateY))
+            raise IncorrectBoard((coordinateX, coordinateY), showMessage)
     if numberOfSwitches <= 0:
         raise IncorrctNumberOfSwitches()

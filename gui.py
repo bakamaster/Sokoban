@@ -47,7 +47,7 @@ class SokobanWindow(QMainWindow):
                 child.widget().deleteLater()
 
     def createBoard(self):
-        #add color to classes
+        # add color to classes
         for (coordinateX, coordinateY), tileType in self._board.items():
             tile = QLabel()
             tile.setStyleSheet(f'background-color: {tileType.getColor()};')

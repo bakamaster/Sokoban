@@ -1,8 +1,11 @@
 import json
 import os
+import pytest
 from gameManager import chooseMovementOption
-from classes import EmptyTile, Box, Player, Switch
-from levelLoader import loadLevel
+from classes import (EmptyTile, Box, Player, Wall,
+                     Switch, classSelector, TileTypeError)
+from levelLoader import (loadLevel, BoardCorrectionValidation,
+                         IncorrectBoard, IncorrctNumberOfSwitches)
 
 
 def testMovePlayerToEmptyTile():
@@ -131,3 +134,38 @@ def testLoadFromFile():
         )
     assert numberOfSwitches == 1
     os.remove(testFilePath)
+
+
+def testLoadBoardWithIncorrectTile():
+    with pytest.raises(TileTypeError):
+        classSelector('empty tile', showMessage=False)
+
+
+def testBoardWithouSwitches():
+    board = {
+        (0, 0): Wall(), (1, 0): Wall(),
+        (2, 0): Wall(), (3, 0): Wall(), (4, 0): Wall(),
+        (0, 1): Wall(), (1, 1): EmptyTile(),
+        (2, 1): Wall(), (3, 1): Box(), (4, 1): Wall(),
+        (0, 2): Wall(), (1, 2): Player(),
+        (2, 2): EmptyTile(), (3, 2): Box(), (4, 2): Wall(),
+        (0, 3): Wall(), (1, 3): Wall(),
+        (2, 3): Wall(), (3, 3): Wall(), (4, 3): Wall()
+        }
+    with pytest.raises(IncorrctNumberOfSwitches):
+        BoardCorrectionValidation(board, 4, 3, 0)
+
+
+def testBoardWithoutWalls():
+    board = {
+        (0, 0): Wall(), (1, 0): Wall(),
+        (2, 0): EmptyTile(), (3, 0): Wall(), (4, 0): Wall(),
+        (0, 1): Wall(), (1, 1): EmptyTile(),
+        (2, 1): Wall(), (3, 1): Box(), (4, 1): Wall(),
+        (0, 2): Wall(), (1, 2): Player(),
+        (2, 2): EmptyTile(), (3, 2): Box(), (4, 2): Wall(),
+        (0, 3): Wall(), (1, 3): Wall(),
+        (2, 3): Wall(), (3, 3): Wall(), (4, 3): Wall()
+        }
+    with pytest.raises(IncorrectBoard):
+        BoardCorrectionValidation(board, 4, 3, 0, showMessage=False)
