@@ -5,7 +5,8 @@ from gameManager import chooseMovementOption
 from classes import (EmptyTile, Box, Player, Wall,
                      Switch, classSelector, TileTypeError)
 from levelLoader import (loadLevel, BoardCorrectionValidation,
-                         IncorrectBoard, IncorrctNumberOfSwitches)
+                         IncorrectBoard, IncorrctNumberOfSwitches,
+                         LevelFileIncorrect, LevelFileNotFound)
 
 
 def testMovePlayerToEmptyTile():
@@ -169,3 +170,17 @@ def testBoardWithoutWalls():
         }
     with pytest.raises(IncorrectBoard):
         BoardCorrectionValidation(board, 4, 3, 0, showMessage=False)
+
+
+def testLoadNonExistentFile():
+    with pytest.raises(LevelFileNotFound):
+        loadLevel('./level30')
+
+
+def testLoadFileWithIncorrectFormat():
+    path = './testFile'
+    with open(path, 'w') as fileHandle:
+        fileHandle.write('test')
+    with pytest.raises(LevelFileIncorrect):
+        loadLevel(path)
+    os.remove(path)
