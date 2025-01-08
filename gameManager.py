@@ -2,6 +2,13 @@ from classes import EmptyTile, Box, Player, Switch
 board = {}
 numberOfSwitches = 0
 
+"""
+Implementation of player and box movement.
+Key features:
+    -Function that chooses movement option based on player beeing on switch
+    -Function for movement in every scenario
+"""
+
 
 def positionAfterMovement(position, direction):
     return (position[0] + direction[0], position[1] + direction[1])

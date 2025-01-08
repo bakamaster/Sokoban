@@ -2,6 +2,14 @@ import json
 from classes import classSelector
 from PySide6.QtWidgets import QMessageBox
 
+"""
+Implementation of function that loads level from JSON file.
+Key features:
+    -Function that loads the level
+    -Function that checks if level meets regulations
+    -Custom errors for easier programe failure understanding
+"""
+
 
 class LevelFileNotFound(Exception):
     def __init__(self, path):

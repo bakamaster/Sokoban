@@ -1,5 +1,13 @@
 from PySide6.QtWidgets import QMessageBox
 
+"""
+Implementation classes.
+Key features:
+    -Error that handles incorrect tile name in board
+    -Classes for each tile
+    -Fuction that selects class for tile
+"""
+
 
 class TileTypeError(Exception):
     def __init__(self, name, showMessage=True):
