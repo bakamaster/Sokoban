@@ -6,6 +6,15 @@ from copy import deepcopy
 from levelLoader import loadLevel
 from gameManager import chooseMovementOption
 import sys
+"""
+Implementation of GUI using PySide6.
+Script that provides graphical interface for Sokoban.
+Key features:
+    -Option to load a standard level or a one created by user
+    -Option to restart the level
+    -Ability to complete levels, go to the next one and complete the game
+    -Handles player movement
+"""
 
 
 class SokobanWindow(QMainWindow):
@@ -26,6 +35,7 @@ class SokobanWindow(QMainWindow):
         self.loadLevelToBoard()
 
     def loadLevelToBoard(self):
+        # Function loads level from JSON file to the board
         if self._customPath is None:
             path = self._levelpath.format(levelNumber=self._currentLevel)
         else:
@@ -37,17 +47,20 @@ class SokobanWindow(QMainWindow):
         self.createBoard()
 
     def restartLevel(self):
+        # Function restarts level- changes board to the state
+        # before any player movements
         self._board = deepcopy(self._originalBoard)
         self.createBoard()
 
     def clearBoard(self):
+        # Function clears the board layout from any widgets
         while self.ui.boardLayout.count():
             child = self.ui.boardLayout.takeAt(0)
             if child.widget():
                 child.widget().deleteLater()
 
     def createBoard(self):
-        # add color to classes
+        # Function creates graphical board 
         for (coordinateX, coordinateY), tileType in self._board.items():
             tile = QLabel()
             tile.setStyleSheet(f'background-color: {tileType.getColor()};')
@@ -67,6 +80,7 @@ class SokobanWindow(QMainWindow):
         self.ui.levelInfo.setText(f'Level {self._currentLevel+1}')
 
     def keyPressEvent(self, event):
+        # Function handles keyboard input and moves player accordingly
         keyDirections = {
             Qt.Key.Key_W: (0, -1),
             Qt.Key.Key_A: (-1, 0),
@@ -85,6 +99,7 @@ class SokobanWindow(QMainWindow):
                 self.newLevel()
 
     def newLevel(self):
+        # Function loads new level and displays inforamtional window
         self.clearBoard()
         if self._customPath is None:
             self._currentLevel += 1
