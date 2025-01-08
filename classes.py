@@ -13,47 +13,42 @@ class TileTypeError(Exception):
             errorDialog.exec()
 
 
-class Wall():
-    def __init__(self):
-        self._color = 'orange'
+class Tile():
+    def __init__(self, color):
+        self._color = color
 
     def getColor(self):
         return self._color
+
+
+class Wall(Tile):
+    def __init__(self):
+        super().__init__('orange')
 
     def __str__(self):
         return 'wall'
 
 
-class EmptyTile():
+class EmptyTile(Tile):
     def __init__(self):
-        self._color = 'white'
-
-    def getColor(self):
-        return self._color
+        super().__init__('white')
 
     def __str__(self):
         return 'empty tile'
 
 
-class Switch():
+class Switch(Tile):
     def __init__(self):
-        self._color = 'red'
-
-    def getColor(self):
-        return self._color
+        super().__init__('red')
 
     def __str__(self):
         return 'switch'
 
 
-class Box():
+class Box(Tile):
     def __init__(self):
-        super().__init__()
+        super().__init__('yellow')
         self._isOnSwitch = False
-        self._color = 'yellow'
-
-    def getColor(self):
-        return self._color
 
     def isOnSwitch(self):
         return self._isOnSwitch
@@ -66,9 +61,9 @@ class Box():
         return 'box'
 
 
-class Player():
+class Player(Tile):
     def __init__(self):
-        super().__init__()
+        super().__init__('green')
         self._isOnSwitch = False
         self._color = 'green'
 
