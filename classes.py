@@ -82,15 +82,11 @@ class Player(Tile):
 
 
 def classSelector(name, showMessage=True):
-    if name == 'wall':
-        return Wall()
-    elif name == 'emptyTile':
-        return EmptyTile()
-    elif name == 'switch':
-        return Switch()
-    elif name == 'box':
-        return Box()
-    elif name == 'player':
-        return Player()
+    tileDictionary = {
+        'wall': Wall(), 'emptyTile': EmptyTile(),
+        'switch': Switch(), 'box': Box(), 'player': Player()
+        }
+    if name in tileDictionary.keys():
+        return tileDictionary[name]
     else:
         raise TileTypeError(name, showMessage)
