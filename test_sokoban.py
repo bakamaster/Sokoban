@@ -5,7 +5,7 @@ from gameManager import chooseMovementOption
 from classes import (EmptyTile, Box, Player, Wall,
                      Switch, classSelector, TileTypeError)
 from levelLoader import (loadLevel, BoardCorrectionValidation,
-                         IncorrectBoard, IncorrctNumberOfSwitches,
+                         IncorrectBoard, IncorrectNumberOfSwitches,
                          LevelFileIncorrect, LevelFileNotFound)
 
 
@@ -153,7 +153,7 @@ def testBoardWithouSwitches():
         (0, 3): Wall(), (1, 3): Wall(),
         (2, 3): Wall(), (3, 3): Wall(), (4, 3): Wall()
         }
-    with pytest.raises(IncorrctNumberOfSwitches):
+    with pytest.raises(IncorrectNumberOfSwitches):
         BoardCorrectionValidation(board, 4, 3, 0)
 
 

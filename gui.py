@@ -60,7 +60,7 @@ class SokobanWindow(QMainWindow):
                 child.widget().deleteLater()
 
     def createBoard(self):
-        # Function creates graphical board 
+        # Function creates graphical board
         for (coordinateX, coordinateY), tileType in self._board.items():
             tile = QLabel()
             tile.setStyleSheet(f'background-color: {tileType.getColor()};')

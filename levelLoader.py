@@ -39,15 +39,16 @@ class IncorrectBoard(Exception):
             errorDialog.exec()
 
 
-class IncorrctNumberOfSwitches(Exception):
+class IncorrectNumberOfSwitches(Exception):
     def __init__(self):
-        super().__init__('The board does not have switches')
+        super().__init__('The board does have incorrect number of switches')
 
 
 def loadLevel(path):
     board = {}
     numberOfSwitches = 0
     coordinateY = 0
+    numberOfBoxes = 0
     try:
         with open(path, 'r') as fileHandle:
             data = json.load(fileHandle)
@@ -56,6 +57,8 @@ def loadLevel(path):
                 for tile in row:
                     if tile == 'switch':
                         numberOfSwitches += 1
+                    elif tile == 'box':
+                        numberOfBoxes += 1
                     board[(coordinateX, coordinateY)] = classSelector(tile)
                     coordinateX += 1
                 coordinateY += 1
@@ -63,7 +66,8 @@ def loadLevel(path):
             board,
             coordinateX-1,
             coordinateY-1,
-            numberOfSwitches
+            numberOfSwitches,
+            numberOfBoxes
             )
     except FileNotFoundError:
         raise LevelFileNotFound(path)
@@ -78,7 +82,8 @@ def loadLevel(path):
 
 
 def BoardCorrectionValidation(board: dict, maxX, maxY,
-                              numberOfSwitches, showMessage=True):
+                              numberOfSwitches, numberOfBoxes,
+                              showMessage=True):
     for (coordinateX, coordinateY), tile in board.items():
         tileType = str(tile)
         if (
@@ -91,5 +96,5 @@ def BoardCorrectionValidation(board: dict, maxX, maxY,
             and tileType != 'wall'
         ):
             raise IncorrectBoard((coordinateX, coordinateY), showMessage)
-    if numberOfSwitches <= 0:
-        raise IncorrctNumberOfSwitches()
+    if numberOfSwitches <= 0 or numberOfBoxes != numberOfSwitches:
+        raise IncorrectNumberOfSwitches()
