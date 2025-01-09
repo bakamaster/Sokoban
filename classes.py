@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMessageBox
+from errors import TileTypeError
 
 """
 Implementation classes.
@@ -7,18 +7,6 @@ Key features:
     -Classes for each tile
     -Fuction that selects class for tile
 """
-
-
-class TileTypeError(Exception):
-    def __init__(self, name, showMessage=True):
-        super().__init__(f'Incorrect tile name- {name}')
-        if showMessage:
-            errorDialog = QMessageBox()
-            errorDialog.setWindowTitle("Incorrect Board")
-            errorDialog.setText("The board you were trying to load"
-                                "has incorrect structure, it may not "
-                                "work as intended!")
-            errorDialog.exec()
 
 
 class Tile():

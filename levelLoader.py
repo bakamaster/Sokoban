@@ -1,6 +1,8 @@
 import json
 from classes import classSelector
-from PySide6.QtWidgets import QMessageBox
+from errors import (LevelFileIncorrect, LevelFileNotFound,
+                    LevelPermissionError, IncorrectBoard,
+                    IncorrectNumberOfSwitches)
 
 """
 Implementation of function that loads level from JSON file.
@@ -9,39 +11,6 @@ Key features:
     -Function that checks if level meets regulations
     -Custom errors for easier programe failure understanding
 """
-
-
-class LevelFileNotFound(Exception):
-    def __init__(self, path):
-        super().__init__(f'Level file not found, check the path {path}')
-
-
-class LevelPermissionError(Exception):
-    def __init__(self):
-        super().__init__("Could not load the level due to lacking permissions")
-
-
-class LevelFileIncorrect(Exception):
-    def __init__(self):
-        super().__init__("Level file is not in a corrct JSON format")
-
-
-class IncorrectBoard(Exception):
-    def __init__(self, coordinates, showMessage=True):
-        super().__init__(f'Board is incorrect, outer tiles are not walls,\
-                          check tile {coordinates}')
-        if showMessage:
-            errorDialog = QMessageBox()
-            errorDialog.setWindowTitle("Incorrect Board")
-            errorDialog.setText("The board you were trying to load"
-                                "has incorrect structure, it may not "
-                                "work as intended!")
-            errorDialog.exec()
-
-
-class IncorrectNumberOfSwitches(Exception):
-    def __init__(self):
-        super().__init__('The board does have incorrect number of switches')
 
 
 def loadLevel(path):
@@ -74,7 +43,7 @@ def loadLevel(path):
     except PermissionError:
         raise LevelPermissionError()
     except json.JSONDecodeError:
-        raise LevelFileIncorrect()
+        raise LevelFileIncorrect(path)
     except Exception as e:
         print(f'Unexpected exception {e}')
 
@@ -97,4 +66,4 @@ def BoardCorrectionValidation(board: dict, maxX, maxY,
         ):
             raise IncorrectBoard((coordinateX, coordinateY), showMessage)
     if numberOfSwitches <= 0 or numberOfBoxes != numberOfSwitches:
-        raise IncorrectNumberOfSwitches()
+        raise IncorrectNumberOfSwitches(showMessage)
