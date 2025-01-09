@@ -42,6 +42,7 @@ class SokobanWindow(QMainWindow):
             path = self._customPath
         board, numberOfSwitches = loadLevel(path)
         self._board = board
+        self._originalNumberOfSwitches = deepcopy(numberOfSwitches)
         self._originalBoard = deepcopy(board)
         self._numberOfSwitches = numberOfSwitches
         self.createBoard()
@@ -50,6 +51,7 @@ class SokobanWindow(QMainWindow):
         # Function restarts level- changes board to the state
         # before any player movements
         self._board = deepcopy(self._originalBoard)
+        self._numberOfSwitches = deepcopy(self._originalNumberOfSwitches)
         self.createBoard()
 
     def clearBoard(self):
@@ -122,7 +124,7 @@ def guiMain(args):
     app = QApplication(args)
     window = SokobanWindow()
     window.show()
-    return app.exec_()
+    return app.exec()
 
 
 if __name__ == "__main__":

@@ -117,10 +117,16 @@
    <property name="text">
     <string>Load custom level</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
   </action>
   <action name="resetLevel">
    <property name="text">
     <string>Reset</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
  </widget>

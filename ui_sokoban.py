@@ -105,7 +105,13 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Sokoban", None))
         self.loadCustomLevel.setText(QCoreApplication.translate("MainWindow", u"Load custom level", None))
+#if QT_CONFIG(shortcut)
+        self.loadCustomLevel.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+L", None))
+#endif // QT_CONFIG(shortcut)
         self.resetLevel.setText(QCoreApplication.translate("MainWindow", u"Reset", None))
+#if QT_CONFIG(shortcut)
+        self.resetLevel.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+R", None))
+#endif // QT_CONFIG(shortcut)
         self.levelInfo.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:18pt;\">Level</span></p></body></html>", None))
         self.moveInfo.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:18pt;\">Use WSAD to move</span></p></body></html>", None))
         self.menuLevel.setTitle(QCoreApplication.translate("MainWindow", u"Level", None))
