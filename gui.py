@@ -33,6 +33,7 @@ class SokobanWindow(QMainWindow):
         self.ui.levelInfo.setText(f'Level {self._currentLevel+1}')
         self.ui.resetLevel.triggered.connect(self.restartLevel)
         self.ui.loadCustomLevel.triggered.connect(self.loadCustomLevel)
+        startWindow()
         self.initLegend()
         self.loadLevelToBoard()
 
@@ -142,10 +143,25 @@ class SokobanWindow(QMainWindow):
         gameFinishedDialog.exec()
 
 
+class startWindow(QMessageBox):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Sokoban")
+        self.setText(
+            "<div style='text-align: center;'>"
+            "Welcome to sokoban!!!<br><br>"
+            "The game has 3 levels but you can load a custom "
+            "one using file option in top right corner.<br><br>"
+            "You need to push all of the boxes to switches.<br><br>"
+            "Guide the character using WSAD."
+            )
+        self.exec()
+
+
 def guiMain(args):
     app = QApplication(args)
     window = SokobanWindow()
-    window.show()
+    window.showMaximized()
     return app.exec()
 
 
