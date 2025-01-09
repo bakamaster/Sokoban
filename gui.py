@@ -2,7 +2,6 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (QApplication, QMainWindow, QLabel,
                                QSizePolicy, QFileDialog, QMessageBox,
                                QListWidgetItem)
-from PySide6.QtGui import QColor, QPixmap
 from ui_sokoban import Ui_MainWindow
 from copy import deepcopy
 from levelLoader import loadLevel

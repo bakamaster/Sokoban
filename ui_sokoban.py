@@ -75,6 +75,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addWidget(self.moveInfo)
 
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout.addItem(self.horizontalSpacer)
+
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
@@ -91,9 +95,22 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addLayout(self.boardLayout)
 
         self.splitter.addWidget(self.layoutWidget)
-        self.legendList = QListWidget(self.splitter)
+        self.layoutWidget1 = QWidget(self.splitter)
+        self.layoutWidget1.setObjectName(u"layoutWidget1")
+        self.verticalLayout_3 = QVBoxLayout(self.layoutWidget1)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.legendLabel = QLabel(self.layoutWidget1)
+        self.legendLabel.setObjectName(u"legendLabel")
+
+        self.verticalLayout_3.addWidget(self.legendLabel)
+
+        self.legendList = QListWidget(self.layoutWidget1)
         self.legendList.setObjectName(u"legendList")
-        self.splitter.addWidget(self.legendList)
+
+        self.verticalLayout_3.addWidget(self.legendList)
+
+        self.splitter.addWidget(self.layoutWidget1)
 
         self.gridLayout.addWidget(self.splitter, 0, 0, 1, 1)
 
@@ -129,6 +146,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(shortcut)
         self.levelInfo.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:18pt;\">Level</span></p></body></html>", None))
         self.moveInfo.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:18pt;\">Use WSAD to move</span></p></body></html>", None))
+        self.legendLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:18pt;\">Legend: Colors and Their Meaning</span></p></body></html>", None))
         self.menuLevel.setTitle(QCoreApplication.translate("MainWindow", u"Level", None))
     # retranslateUi
 
