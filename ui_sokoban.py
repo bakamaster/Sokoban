@@ -17,15 +17,15 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLabel,
-    QLayout, QMainWindow, QMenu, QMenuBar,
-    QSizePolicy, QSpacerItem, QStatusBar, QVBoxLayout,
-    QWidget)
+    QLayout, QListWidget, QListWidgetItem, QMainWindow,
+    QMenu, QMenuBar, QSizePolicy, QSpacerItem,
+    QSplitter, QStatusBar, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1085, 744)
+        MainWindow.resize(1043, 744)
         self.loadCustomLevel = QAction(MainWindow)
         self.loadCustomLevel.setObjectName(u"loadCustomLevel")
         self.resetLevel = QAction(MainWindow)
@@ -40,13 +40,21 @@ class Ui_MainWindow(object):
         self.centralwidget.setMaximumSize(QSize(16777215, 16777215))
         self.gridLayout = QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName(u"gridLayout")
+        self.splitter = QSplitter(self.centralwidget)
+        self.splitter.setObjectName(u"splitter")
+        self.splitter.setOrientation(Qt.Horizontal)
+        self.layoutWidget = QWidget(self.splitter)
+        self.layoutWidget.setObjectName(u"layoutWidget")
+        self.verticalLayout_2 = QVBoxLayout(self.layoutWidget)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
-        self.levelInfo = QLabel(self.centralwidget)
+        self.levelInfo = QLabel(self.layoutWidget)
         self.levelInfo.setObjectName(u"levelInfo")
         sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Minimum)
         sizePolicy1.setHorizontalStretch(0)
@@ -59,7 +67,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addWidget(self.levelInfo)
 
-        self.moveInfo = QLabel(self.centralwidget)
+        self.moveInfo = QLabel(self.layoutWidget)
         self.moveInfo.setObjectName(u"moveInfo")
         sizePolicy1.setHeightForWidth(self.moveInfo.sizePolicy().hasHeightForWidth())
         self.moveInfo.setSizePolicy(sizePolicy1)
@@ -71,7 +79,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
 
 
-        self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
+        self.verticalLayout_2.addLayout(self.verticalLayout)
 
         self.boardLayout = QGridLayout()
         self.boardLayout.setObjectName(u"boardLayout")
@@ -80,12 +88,19 @@ class Ui_MainWindow(object):
         self.boardLayout.addItem(self.verticalSpacer, 0, 0, 1, 1)
 
 
-        self.gridLayout.addLayout(self.boardLayout, 1, 0, 1, 1)
+        self.verticalLayout_2.addLayout(self.boardLayout)
+
+        self.splitter.addWidget(self.layoutWidget)
+        self.legendList = QListWidget(self.splitter)
+        self.legendList.setObjectName(u"legendList")
+        self.splitter.addWidget(self.legendList)
+
+        self.gridLayout.addWidget(self.splitter, 0, 0, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1085, 20))
+        self.menubar.setGeometry(QRect(0, 0, 1043, 20))
         self.menuLevel = QMenu(self.menubar)
         self.menuLevel.setObjectName(u"menuLevel")
         MainWindow.setMenuBar(self.menubar)
