@@ -1,6 +1,8 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QSizePolicy
-from PySide6.QtWidgets import QFileDialog, QMessageBox
+from PySide6.QtWidgets import (QApplication, QMainWindow, QLabel,
+                               QSizePolicy, QFileDialog, QMessageBox,
+                               QListWidgetItem)
+from PySide6.QtGui import QColor, QPixmap
 from ui_sokoban import Ui_MainWindow
 from copy import deepcopy
 from levelLoader import loadLevel
@@ -32,7 +34,28 @@ class SokobanWindow(QMainWindow):
         self.ui.levelInfo.setText(f'Level {self._currentLevel+1}')
         self.ui.resetLevel.triggered.connect(self.restartLevel)
         self.ui.loadCustomLevel.triggered.connect(self.loadCustomLevel)
+        self.initLegend()
         self.loadLevelToBoard()
+
+    def initLegend(self):
+        legend = {
+            "wall": ("Wall", "background-color: orange;"),
+            "emptyTile": ("Empty Tile", "background-color: white;"),
+            "player": ("Player", "background-color: green;"),
+            "box": ("Box", "background-color: yellow;"),
+            "switch": ("Switch", "background-color: red;"),
+            "boxOnSwitch": ("Box located on switch",
+                            "background-color: #B8860B;"),
+            "playerOnSwitch": ("Player located on switch",
+                               "background-color: darkgreen;")
+        }
+        for (description, color) in legend.values():
+            legendItem = QListWidgetItem()
+            legendWidget = QLabel(description)
+            legendWidget.setStyleSheet(f'{color} font-size: 30px;')
+            legendItem.setSizeHint(legendWidget.sizeHint())
+            self.ui.legendList.addItem(legendItem)
+            self.ui.legendList.setItemWidget(legendItem, legendWidget)
 
     def loadLevelToBoard(self):
         # Function loads level from JSON file to the board
