@@ -18,6 +18,7 @@ def loadLevel(path):
     numberOfSwitches = 0
     coordinateY = 0
     numberOfBoxes = 0
+    playerPosition = (0, 0)
     try:
         with open(path, 'r') as fileHandle:
             data = json.load(fileHandle)
@@ -28,6 +29,8 @@ def loadLevel(path):
                         numberOfSwitches += 1
                     elif tile == 'box':
                         numberOfBoxes += 1
+                    elif tile == 'player':
+                        playerPosition = (coordinateX, coordinateY)
                     board[(coordinateX, coordinateY)] = classSelector(tile)
                     coordinateX += 1
                 coordinateY += 1
@@ -47,7 +50,7 @@ def loadLevel(path):
     except Exception as e:
         print(f'Unexpected exception {e}')
 
-    return board, numberOfSwitches
+    return board, numberOfSwitches, playerPosition
 
 
 def BoardCorrectionValidation(board: dict, maxX, maxY,

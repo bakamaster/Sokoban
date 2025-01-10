@@ -23,17 +23,17 @@ class SokobanWindow(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self._board = {}
         self._originalBoard = {}
-        self._numberOfSwitches = 0
+        self._originalNumberOfSwitches = 0
         self._currentLevel = 0
+        self._gameManager = None
         self._customPath = None
         self._levelpath = './level{levelNumber}.json'
         self._playerPosition = None
         self.ui.levelInfo.setText(f'Level {self._currentLevel+1}')
         self.ui.resetLevel.triggered.connect(self.restartLevel)
         self.ui.loadCustomLevel.triggered.connect(self.loadCustomLevel)
-        startWindow()
+        #startWindow()
         self.setFocus()
         self.initLegend()
         self.loadLevelToBoard()
@@ -64,23 +64,27 @@ class SokobanWindow(QMainWindow):
             path = self._levelpath.format(levelNumber=self._currentLevel)
         else:
             path = self._customPath
-        board, numberOfSwitches = loadLevel(path)
-        self._board = board
+        board, numberOfSwitches, playerPosition = loadLevel(path)
         self._originalNumberOfSwitches = deepcopy(numberOfSwitches)
         self._originalBoard = deepcopy(board)
-        self._numberOfSwitches = numberOfSwitches
-        self.createBoard()
+        self._originalPlayerPosition = deepcopy(playerPosition)
         self._gameManager = GameManager(
-            self._board,
-            self._numberOfSwitches,
-            self._playerPosition
+            board,
+            numberOfSwitches,
+            playerPosition
             )
+        self.createBoard()
 
     def restartLevel(self):
         # Function restarts level- changes board to the state
         # before any player movements
-        self._board = deepcopy(self._originalBoard)
-        self._numberOfSwitches = deepcopy(self._originalNumberOfSwitches)
+        self._gameManager.newBoard(deepcopy(self._originalBoard))
+        self._gameManager.newNumberOfSwitches(
+            deepcopy(self._originalNumberOfSwitches)
+            )
+        self._gameManager.newPlayerPosition(
+            deepcopy(self._originalPlayerPosition)
+            )
         self.createBoard()
 
     def clearBoard(self):
@@ -92,11 +96,11 @@ class SokobanWindow(QMainWindow):
 
     def createBoard(self):
         # Function creates graphical board
-        for (coordinateX, coordinateY), tileType in self._board.items():
+        for (coordinateX, coordinateY), tileType in (
+            self._gameManager.board().items()
+        ):
             tile = QLabel()
             tile.setStyleSheet(f'background-color: {tileType.getColor()};')
-            if str(tileType) == 'player':
-                self._playerPosition = (coordinateX, coordinateY)
             tile.setSizePolicy(QSizePolicy.Policy.Expanding,
                                QSizePolicy.Policy.Expanding)
             self.ui.boardLayout.addWidget(tile, coordinateY, coordinateX)
@@ -120,12 +124,25 @@ class SokobanWindow(QMainWindow):
             }
         if event.key() in keyDirections:
             self._gameManager.movePlayer(keyDirections[event.key()])
-            self.createBoard()
+            self.updateBoard()
             if self._gameManager.numberOfSwitches() == 0:
                 self.newLevel()
 
-    
-
+    def updateBoard(self):
+        for (coordinateX, coordinateY), tileType in (
+            self._gameManager.tilesToUpdate().items()
+        ):
+            previousTile = self.ui.boardLayout.itemAtPosition(coordinateY,
+                                                              coordinateX)
+            previousTile.widget().deleteLater()
+            tile = QLabel()
+            tile.setStyleSheet(f'background-color: {tileType.getColor()};')
+            if str(tileType) == 'player':
+                self._playerPosition = (coordinateX, coordinateY)
+            tile.setSizePolicy(QSizePolicy.Policy.Expanding,
+                               QSizePolicy.Policy.Expanding)
+            self.ui.boardLayout.addWidget(tile, coordinateY, coordinateX)
+        self._gameManager.resetTilesToUpdate()
 
     def newLevel(self):
         # Function loads new level and displays inforamtional window

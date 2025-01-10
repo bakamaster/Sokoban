@@ -1,5 +1,4 @@
 from classes import EmptyTile, Box, Player, Switch
-from copy import deepcopy
 
 
 class GameManager():
@@ -20,15 +19,25 @@ class GameManager():
     def board(self):
         return self._board
 
+    def newBoard(self, newBoard):
+        self._board = newBoard
+
+    def newPlayerPosition(self, newPlayerPosition):
+        self._playerPosition = newPlayerPosition
+
+    def newNumberOfSwitches(self, newNumberOFSwitches):
+        self._numberOfSwitches = newNumberOFSwitches
+
     def numberOfSwitches(self):
         return self._numberOfSwitches
 
-    def tilesToUpdate(self):
-        tilesToUpdate = deepcopy(self._tilesToUpdate)
+    def resetTilesToUpdate(self):
         self._tilesToUpdate = {}
-        return tilesToUpdate
 
-    def positionAfterMovement(position, direction):
+    def tilesToUpdate(self):
+        return self._tilesToUpdate
+
+    def positionAfterMovement(self, position, direction):
         return (position[0] + direction[0], position[1] + direction[1])
 
     def movePlayer(self, direction):
@@ -39,29 +48,31 @@ class GameManager():
         tileAfterMovement = str(self._board[positionAfterMovement])
         isOnSwitch = self._board[self._playerPosition].isOnSwitch()
         if self._movementType[tileAfterMovement]('player',
-                                                 self._playerPosition,
+                                                 positionAfterMovement,
                                                  direction):
             if isOnSwitch:
                 self._board[self._playerPosition] = Switch()
+                self._tilesToUpdate[self._playerPosition] = Switch()
             else:
                 self._board[self._playerPosition] = EmptyTile()
-            self._tilesToUpdate[self._playerPosition] = Player()
+                self._tilesToUpdate[self._playerPosition] = EmptyTile()
+            self._playerPosition = positionAfterMovement
 
     def moveToBox(self, tileType, startingBoxPosition, direction):
         positionAfterMovement = self.positionAfterMovement(startingBoxPosition,
                                                            direction)
         tileAfterMovement = str(self._board[positionAfterMovement])
         isOnSwitch = self._board[startingBoxPosition].isOnSwitch()
-        if self._movementType[tileAfterMovement]('box', startingBoxPosition,
+        if self._movementType[tileAfterMovement]('box', positionAfterMovement,
                                                  direction):
-            self._board[startingBoxPosition] = self._tiles[tileType]()
+            tile = self._tiles[tileType]()
             if isOnSwitch:
-                self._board[startingBoxPosition].changeIsOnSwitch()
+                tile.changeIsOnSwitch()
                 if tileType == 'player':
                     self._numberOfSwitches += 1
-            self._tilesToUpdate[positionAfterMovement] = (
-                self._tiles[tileType]()
-                )
+            self._board[startingBoxPosition] = tile
+            self._tilesToUpdate[startingBoxPosition] = tile
+            return True
 
     def moveToWall(self, tileType, positionAfterMovement, direction):
         return False
@@ -76,6 +87,7 @@ class GameManager():
         tile = self._tiles[tileType]()
         tile.changeIsOnSwitch()
         self._board[positionAfterMovement] = tile
-        self._numberOfSwitches -= 1
+        if tileType == 'box':
+            self._numberOfSwitches -= 1
         self._tilesToUpdate[positionAfterMovement] = tile
         return True
