@@ -49,8 +49,8 @@ class Box(Tile):
     def isOnSwitch(self):
         return self._isOnSwitch
 
-    def changeIsOnSwitch(self, state):
-        self._isOnSwitch = state
+    def changeIsOnSwitch(self):
+        self._isOnSwitch = True
         self._color = '#B8860B'
 
     def __str__(self):
@@ -69,8 +69,8 @@ class Player(Tile):
     def isOnSwitch(self):
         return self._isOnSwitch
 
-    def changeIsOnSwitch(self, state):
-        self._isOnSwitch = state
+    def changeIsOnSwitch(self):
+        self._isOnSwitch = True
         self._color = 'darkgreen'
 
     def __str__(self):

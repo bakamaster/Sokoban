@@ -5,7 +5,7 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QLabel,
 from ui_sokoban import Ui_MainWindow
 from copy import deepcopy
 from levelLoader import loadLevel
-from gameManager import chooseMovementOption
+from gameManager import GameManager
 import sys
 """
 Implementation of GUI using PySide6.
@@ -70,6 +70,11 @@ class SokobanWindow(QMainWindow):
         self._originalBoard = deepcopy(board)
         self._numberOfSwitches = numberOfSwitches
         self.createBoard()
+        self._gameManager = GameManager(
+            self._board,
+            self._numberOfSwitches,
+            self._playerPosition
+            )
 
     def restartLevel(self):
         # Function restarts level- changes board to the state
@@ -114,15 +119,13 @@ class SokobanWindow(QMainWindow):
             Qt.Key.Key_D: (1, 0)
             }
         if event.key() in keyDirections:
-            self._board, self._numberOfSwitches = chooseMovementOption(
-                self._playerPosition,
-                keyDirections[event.key()],
-                self._board,
-                self._numberOfSwitches
-                )
+            self._gameManager.movePlayer(keyDirections[event.key()])
             self.createBoard()
-            if self._numberOfSwitches == 0:
+            if self._gameManager.numberOfSwitches() == 0:
                 self.newLevel()
+
+    
+
 
     def newLevel(self):
         # Function loads new level and displays inforamtional window
