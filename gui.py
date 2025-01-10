@@ -34,6 +34,7 @@ class SokobanWindow(QMainWindow):
         self.ui.resetLevel.triggered.connect(self.restartLevel)
         self.ui.loadCustomLevel.triggered.connect(self.loadCustomLevel)
         startWindow()
+        self.setFocus()
         self.initLegend()
         self.loadLevelToBoard()
 
