@@ -46,13 +46,9 @@ class SokobanWindow(QMainWindow):
         their cooresponding colors.
         """
         player = Player()
-        playerOnSwitch = Player()
-        playerOnSwitch.changeIsOnSwitch()
         switch = Switch()
         wall = Wall()
         box = Box()
-        boxOnSwitch = Box()
-        boxOnSwitch.changeIsOnSwitch()
         emptyTile = EmptyTile()
         legend = {
             "wall": ("Wall", f"background-color: {wall.getColor()};"),
@@ -62,10 +58,10 @@ class SokobanWindow(QMainWindow):
             "box": ("Box", f"background-color: {box.getColor()};"),
             "switch": ("Switch", f"background-color: {switch.getColor()};"),
             "boxOnSwitch": ("Box located on switch",
-                            f"background-color: {boxOnSwitch.getColor()};"),
+                            f"background-color: {box.getColorOnSwitch()};"),
             "playerOnSwitch": (
                 "Player located on switch",
-                f"background-color: {playerOnSwitch.getColor()};"
+                f"background-color: {player.getColorOnSwitch()};"
                 )
         }
         options = [
@@ -228,6 +224,9 @@ class SokobanWindow(QMainWindow):
                 self._currentLevel = 0
             self.loadLevelToBoard()
             self.updateLevelInfo()
+        self.setFocus()
+
+    def mousePressEvent(self, event):
         self.setFocus()
 
 
