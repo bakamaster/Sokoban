@@ -15,6 +15,7 @@ Key features:
     -Option to restart the level
     -Ability to complete levels, go to the next one and complete the game
     -Handles player movement
+    -Only changed tiles are updated
 """
 
 
@@ -33,12 +34,16 @@ class SokobanWindow(QMainWindow):
         self.ui.levelInfo.setText(f'Level {self._currentLevel+1}')
         self.ui.resetLevel.triggered.connect(self.restartLevel)
         self.ui.loadCustomLevel.triggered.connect(self.loadCustomLevel)
-        #startWindow()
+        startWindow()
         self.setFocus()
         self.initLegend()
         self.loadLevelToBoard()
 
     def initLegend(self):
+        """
+        Method that creates a legend, with names of tiles and
+        their cooresponding colors.
+        """
         legend = {
             "wall": ("Wall", "background-color: orange;"),
             "emptyTile": ("Empty Tile", "background-color: white;"),
@@ -59,7 +64,9 @@ class SokobanWindow(QMainWindow):
             self.ui.legendList.setItemWidget(legendItem, legendWidget)
 
     def loadLevelToBoard(self):
-        # Function loads level from JSON file to the board
+        """
+        Method loads level from JSON file and creates game manager object
+        """
         if self._customPath is None:
             path = self._levelpath.format(levelNumber=self._currentLevel)
         else:
@@ -76,8 +83,10 @@ class SokobanWindow(QMainWindow):
         self.createBoard()
 
     def restartLevel(self):
-        # Function restarts level- changes board to the state
-        # before any player movements
+        """
+        Method restarts level- changes board to the state
+        before any player movements
+        """
         self._gameManager.newBoard(deepcopy(self._originalBoard))
         self._gameManager.newNumberOfSwitches(
             deepcopy(self._originalNumberOfSwitches)
@@ -88,14 +97,18 @@ class SokobanWindow(QMainWindow):
         self.createBoard()
 
     def clearBoard(self):
-        # Function clears the board layout from any widgets
+        """
+        Method clears the board layout from any widgets
+        """
         while self.ui.boardLayout.count():
             child = self.ui.boardLayout.takeAt(0)
             if child.widget():
                 child.widget().deleteLater()
 
     def createBoard(self):
-        # Function creates graphical board
+        """
+        Method creates graphical board
+        """
         for (coordinateX, coordinateY), tileType in (
             self._gameManager.board().items()
         ):
@@ -110,12 +123,16 @@ class SokobanWindow(QMainWindow):
                                                        "Wybierz plik poziomu",
                                                        "Pliki JSON (*.json)")
         self._customPath = path
+        self.setFocus()
+        self.loadLevelToBoard()
 
     def updateLevelInfo(self):
         self.ui.levelInfo.setText(f'Level {self._currentLevel+1}')
 
     def keyPressEvent(self, event):
-        # Function handles keyboard input and moves player accordingly
+        """
+        Method handles keyboard input and moves player accordingly
+        """
         keyDirections = {
             Qt.Key.Key_W: (0, -1),
             Qt.Key.Key_A: (-1, 0),
@@ -129,6 +146,9 @@ class SokobanWindow(QMainWindow):
                 self.newLevel()
 
     def updateBoard(self):
+        """
+        Method which updates tiles, that were changed during movement, in GUI.
+        """
         for (coordinateX, coordinateY), tileType in (
             self._gameManager.tilesToUpdate().items()
         ):
@@ -145,26 +165,59 @@ class SokobanWindow(QMainWindow):
         self._gameManager.resetTilesToUpdate()
 
     def newLevel(self):
-        # Function loads new level and displays inforamtional window
+        """
+        Method loads new level and displays inforamtional window
+        """
         self.clearBoard()
         if self._customPath is None:
             self._currentLevel += 1
             self.updateLevelInfo()
             self.loadLevelToBoard()
-        completedLevelDialog = QMessageBox()
-        completedLevelDialog.setWindowTitle('Level completed')
-        completedLevelDialog.setText(f'Congratulations!!! \
-                                     You completed level {self._currentLevel}')
-        completedLevelDialog.exec()
+        newLevelWindow()
+        self.setFocus()
 
-    def GameFinished():
-        gameFinishedDialog = QMessageBox('Game completed')
-        gameFinishedDialog.setText('Congratulations!!! \
-                                   You completed the game')
-        gameFinishedDialog.exec()
+    def GameFinished(self):
+        if gameFinishedWindow():
+            if self._customPath is None:
+                self._currentLevel = 0
+            self.loadLevelToBoard()
+        self.setFocus()
+
+
+class newLevelWindow(QMessageBox):
+    """
+    Class used to create window after finishing a level.
+    """
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle('Level completed')
+        self.setText('Congratulations!!!'
+                     f'You completed level {self._currentLevel+1}')
+        self.exec()
+
+
+class gameFinishedWindow(QMessageBox):
+    """
+    Class used to create a window after finishing the game.
+    """
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.windowTitle("Game Finished")
+        self.setText('Congratulations!!!'
+                     'You completed the game'
+                     'Do you want to start over?')
+        self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        result = self.exec()
+        if result == QMessageBox.Yes:
+            return True
+        elif result == QMessageBox.No:
+            return False
 
 
 class startWindow(QMessageBox):
+    """
+    Class used to create starting window of the game.
+    """
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Sokoban")

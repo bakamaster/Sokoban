@@ -1,5 +1,13 @@
 from classes import EmptyTile, Box, Player, Switch
 
+"""
+Implementation of game manager class which handles player movement.
+Key features:
+    -Methods choose coorect movement option based on dictionaries
+    -Class stores current state of the board
+    -Class stores tiles that were changed in current movement
+"""
+
 
 class GameManager():
     def __init__(self, board: dict, numberOfSwitches, playerPosition):
@@ -41,6 +49,9 @@ class GameManager():
         return (position[0] + direction[0], position[1] + direction[1])
 
     def movePlayer(self, direction):
+        """
+        Basic movement method, used to move player.
+        """
         positionAfterMovement = self.positionAfterMovement(
             self._playerPosition,
             direction
@@ -59,6 +70,10 @@ class GameManager():
             self._playerPosition = positionAfterMovement
 
     def moveToBox(self, tileType, startingBoxPosition, direction):
+        """
+        Method used when player or box needs to move
+        to a tile that contains a box.
+        """
         positionAfterMovement = self.positionAfterMovement(startingBoxPosition,
                                                            direction)
         tileAfterMovement = str(self._board[positionAfterMovement])

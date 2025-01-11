@@ -1,7 +1,7 @@
 from errors import TileTypeError
 
 """
-Implementation classes.
+Implementation of tile classes.
 Key features:
     -Error that handles incorrect tile name in board
     -Classes for each tile
