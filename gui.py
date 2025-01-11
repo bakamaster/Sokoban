@@ -4,6 +4,7 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QLabel,
                                QListWidgetItem, QFrame)
 from ui_sokoban import Ui_MainWindow
 from copy import deepcopy
+from classes import Player, Box, Switch, Wall, EmptyTile
 from levelLoader import loadLevel
 from gameManager import GameManager
 import sys
@@ -44,22 +45,42 @@ class SokobanWindow(QMainWindow):
         Method that creates a legend, with names of tiles and
         their cooresponding colors.
         """
+        player = Player()
+        playerOnSwitch = Player()
+        playerOnSwitch.changeIsOnSwitch()
+        switch = Switch()
+        wall = Wall()
+        box = Box()
+        boxOnSwitch = Box()
+        boxOnSwitch.changeIsOnSwitch()
+        emptyTile = EmptyTile()
         legend = {
-            "wall": ("Wall", "background-color: orange;"),
-            "emptyTile": ("Empty Tile", "background-color: white;"),
-            "player": ("Player", "background-color: green;"),
-            "box": ("Box", "background-color: yellow;"),
-            "switch": ("Switch", "background-color: red;"),
+            "wall": ("Wall", f"background-color: {wall.getColor()};"),
+            "emptyTile": ("Empty Tile",
+                          f"background-color: {emptyTile.getColor()};"),
+            "player": ("Player", f"background-color: {player.getColor()};"),
+            "box": ("Box", f"background-color: {box.getColor()};"),
+            "switch": ("Switch", f"background-color: {switch.getColor()};"),
             "boxOnSwitch": ("Box located on switch",
-                            "background-color: #B8860B;"),
-            "playerOnSwitch": ("Player located on switch",
-                               "background-color: darkgreen;")
+                            f"background-color: {boxOnSwitch.getColor()};"),
+            "playerOnSwitch": (
+                "Player located on switch",
+                f"background-color: {playerOnSwitch.getColor()};"
+                )
         }
         options = [
-            "To restart the level\ngo to level menu or use ctrl+R",
-            "To load custom level\ngo to level menu or use ctrl+L",
-            "Level menu is located\nin top left corner"
+            "To restart the level go to level menu or use ctrl+R",
+            "To load custom level go to level menu or use ctrl+L",
+            "Level menu is located in top left corner",
+            "Your goal is to put all of the boxes on the switches",
+            "You can move only one box at a time",
+            "Player can step on empty tiles and switches",
+            "You can only push boxes"
         ]
+        self.setLegendTiles(legend)
+        self.setLegendRules(options)
+
+    def setLegendTiles(self, legend):
         for (description, color) in legend.values():
             legendItem = QListWidgetItem()
             legendWidget = QLabel(description)
@@ -67,9 +88,13 @@ class SokobanWindow(QMainWindow):
             legendItem.setSizeHint(legendWidget.sizeHint())
             self.ui.legendList.addItem(legendItem)
             self.ui.legendList.setItemWidget(legendItem, legendWidget)
+
+    def setLegendRules(self, options):
+        maximumWidth = self.ui.legendLabel.maximumWidth()
         for option in options:
             legendItem = QListWidgetItem()
             legendWidget = QLabel(option)
+            legendWidget.setMaximumWidth(maximumWidth)
             legendWidget.setWordWrap(True)
             legendWidget.setFrameStyle(QFrame.Box)
             legendWidget.setLineWidth(2)
@@ -255,7 +280,11 @@ class startWindow(QMessageBox):
             "The game has 3 levels, but you can load a custom "
             "one using file option in the top right corner.<br><br>"
             "You need to push all of the boxes to the switches.<br><br>"
-            "Guide the character using WSAD."
+            "Guide the character using WSAD.<br><br>"
+            "Your goal is to put all of the boxes on the switches.<br><br>"
+            "You can move only one box at a time.<br><br>"
+            "Player can step on empty tiles and switches.<br><br>"
+            "You can only push boxes.<br><br>"
             )
         self.exec()
 

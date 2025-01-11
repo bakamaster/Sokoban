@@ -146,6 +146,6 @@ class Ui_MainWindow(object):
         self.levelInfo.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:18pt;\">Level</span></p></body></html>", None))
         self.moveInfo.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:18pt;\">Use WSAD to move</span></p></body></html>", None))
         self.legendLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:18pt;\">Legend: Colors and Their Meaning</span></p></body></html>", None))
-        self.menuLevel.setTitle(QCoreApplication.translate("MainWindow", u"Level", None))
+        self.menuLevel.setTitle(QCoreApplication.translate("MainWindow", u"Level menu", None))
     # retranslateUi
 

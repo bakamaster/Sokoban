@@ -71,7 +71,7 @@ class Player(Tile):
 
     def changeIsOnSwitch(self):
         self._isOnSwitch = True
-        self._color = 'darkgreen'
+        self._color = '#90EE90'
 
     def __str__(self):
         return 'player'

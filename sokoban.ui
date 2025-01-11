@@ -146,7 +146,7 @@
    </property>
    <widget class="QMenu" name="menuLevel">
     <property name="title">
-     <string>Level</string>
+     <string>Level menu</string>
     </property>
     <addaction name="loadCustomLevel"/>
     <addaction name="resetLevel"/>
