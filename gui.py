@@ -173,8 +173,8 @@ class SokobanWindow(QMainWindow):
         """
         self.clearBoard()
         if self._customPath is None:
-            if self._currentLevel < 2:
-                self._currentLevel += 1
+            self._currentLevel += 1
+            if self._currentLevel < 3:
                 newLevelWindow(self._currentLevel)
                 self.updateLevelInfo()
                 self.loadLevelToBoard()
@@ -189,6 +189,7 @@ class SokobanWindow(QMainWindow):
             if self._customPath is None:
                 self._currentLevel = 0
             self.loadLevelToBoard()
+            self.updateLevelInfo()
         self.setFocus()
 
 
@@ -210,16 +211,16 @@ class gameFinishedWindow(QMessageBox):
     """
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.windowTitle("Game Finished")
+        self.setWindowTitle("Game Finished")
         self.setText('Congratulations!!!'
                      'You completed the game'
                      'Do you want to start over?')
         self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        self.restartLevelChoice()
+
+    def restartLevelChoice(self):
         result = self.exec()
-        if result == QMessageBox.Yes:
-            return True
-        elif result == QMessageBox.No:
-            return False
+        return result == QMessageBox.Yes
 
 
 class startWindow(QMessageBox):
