@@ -77,14 +77,15 @@ class GameManager():
         positionAfterMovement = self.positionAfterMovement(startingBoxPosition,
                                                            direction)
         tileAfterMovement = str(self._board[positionAfterMovement])
+        if tileAfterMovement == 'box':
+            return False
         isOnSwitch = self._board[startingBoxPosition].isOnSwitch()
         if self._movementType[tileAfterMovement]('box', positionAfterMovement,
                                                  direction):
             tile = self._tiles[tileType]()
             if isOnSwitch:
+                self._numberOfSwitches += 1
                 tile.changeIsOnSwitch()
-                if tileType == 'player':
-                    self._numberOfSwitches += 1
             self._board[startingBoxPosition] = tile
             self._tilesToUpdate[startingBoxPosition] = tile
             return True

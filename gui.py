@@ -218,7 +218,7 @@ class gameFinishedWindow(QMessageBox):
         self.setText(
             "<div style='text-align: center;'>"
             'Congratulations!!!<br><br>'
-            'You completed the game<br><br>'
+            'You completed the game.<br><br>'
             'Do you want to start over?'
             )
         self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
