@@ -56,6 +56,10 @@ def loadLevel(path):
 def BoardCorrectionValidation(board: dict, maxX, maxY,
                               numberOfSwitches, numberOfBoxes,
                               showMessage=True):
+    """
+    Function which checks if board has correct number of switches/boxes and
+    if all of the outer tiles are walls.
+    """
     for (coordinateX, coordinateY), tile in board.items():
         tileType = str(tile)
         if (
