@@ -142,7 +142,10 @@ class SokobanWindow(QMainWindow):
         if event.key() in keyDirections:
             self._gameManager.movePlayer(keyDirections[event.key()])
             self.updateBoard()
-            if self._gameManager.numberOfSwitches() == 0:
+            QApplication.processEvents()
+            if (
+                self._gameManager.numberOfSwitches() == 0
+            ):
                 self.newLevel()
 
     def updateBoard(self):
@@ -170,10 +173,15 @@ class SokobanWindow(QMainWindow):
         """
         self.clearBoard()
         if self._customPath is None:
-            self._currentLevel += 1
-            self.updateLevelInfo()
-            self.loadLevelToBoard()
-        newLevelWindow()
+            if self._currentLevel < 2:
+                self._currentLevel += 1
+                newLevelWindow(self._currentLevel)
+                self.updateLevelInfo()
+                self.loadLevelToBoard()
+            else:
+                self.GameFinished()
+        else:
+            self.GameFinished()
         self.setFocus()
 
     def GameFinished(self):
@@ -188,11 +196,11 @@ class newLevelWindow(QMessageBox):
     """
     Class used to create window after finishing a level.
     """
-    def __init__(self, parent=None):
+    def __init__(self, currentLevel, parent=None):
         super().__init__(parent)
         self.setWindowTitle('Level completed')
-        self.setText('Congratulations!!!'
-                     f'You completed level {self._currentLevel+1}')
+        self.setText('Congratulations!!!\n'
+                     f'You completed level {currentLevel}.')
         self.exec()
 
 
