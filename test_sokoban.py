@@ -76,8 +76,8 @@ def testMoveMultipleBoxesToEmptyTile():
              (2, 0): Box(), (3, 0): EmptyTile()}
     gameManager = GameManager(board, 0, (0, 0))
     gameManager.movePlayer((1, 0))
-    finalBoard = {(0, 0): EmptyTile(), (1, 0): Player(),
-                  (2, 0): Box(), (3, 0): Box()}
+    finalBoard = {(0, 0): Player(), (1, 0): Box(),
+                  (2, 0): Box(), (3, 0): EmptyTile()}
     assert (
         {coordinates: str(tile) for coordinates, tile in (
             gameManager.board().items()
@@ -87,17 +87,17 @@ def testMoveMultipleBoxesToEmptyTile():
 
 
 def testMoveMultipleBoxesToSwitch():
-    board = {(0, 0): Player(), (1, 0): Box(), (2, 0): Box(), (3, 0): Switch()}
+    board = {(0, 0): Player(), (1, 0): Box(),
+             (2, 0): Box(), (3, 0): Switch()}
     gameManager = GameManager(board, 0, (0, 0))
     gameManager.movePlayer((1, 0))
-    finalBoard = {(0, 0): EmptyTile(), (1, 0): Player(),
-                  (2, 0): Box(), (3, 0): Box()}
+    finalBoard = {(0, 0): Player(), (1, 0): Box(),
+                  (2, 0): Box(), (3, 0): Switch()}
     board = gameManager.board()
     assert (
         {coordinates: str(tile) for coordinates, tile in board.items()}
         == {coordinates: str(tile) for coordinates, tile in finalBoard.items()}
         )
-    assert board[(3, 0)].isOnSwitch()
 
 
 def testMovePlayerFromSwitch():
@@ -173,15 +173,15 @@ def testMoveMultipleBoxesFromSwitch():
     board[(2, 0)].changeIsOnSwitch()
     gameManager = GameManager(board, 0, (0, 0))
     gameManager.movePlayer((1, 0))
-    finalBoard = {(0, 0): EmptyTile(), (1, 0): Player(),
-                  (2, 0): Box(), (3, 0): Box()}
+    finalBoard = {(0, 0): Player(), (1, 0): Box(),
+                  (2, 0): Box(), (3, 0): EmptyTile()}
     board = gameManager.board()
     assert (
         {coordinates: str(tile) for coordinates, tile in board.items()}
         == {coordinates: str(tile) for coordinates, tile in finalBoard.items()}
         )
     assert board[(1, 0)].isOnSwitch() and board[(2, 0)].isOnSwitch()
-    assert gameManager.numberOfSwitches() == 1
+    assert gameManager.numberOfSwitches() == 0
 
 
 def testMoveMultipleBoxesAndPlayerFromSwitch():
@@ -192,15 +192,15 @@ def testMoveMultipleBoxesAndPlayerFromSwitch():
     board[(0, 0)].changeIsOnSwitch()
     gameManager = GameManager(board, 1, (0, 0))
     gameManager.movePlayer((1, 0))
-    finalBoard = {(0, 0): Switch(), (1, 0): Player(),
-                  (2, 0): Box(), (3, 0): Box()}
+    finalBoard = {(0, 0): Player(), (1, 0): Box(),
+                  (2, 0): Box(), (3, 0): EmptyTile()}
     board = gameManager.board()
     assert (
         {coordinates: str(tile) for coordinates, tile in board.items()}
         == {coordinates: str(tile) for coordinates, tile in finalBoard.items()}
         )
-    assert board[(1, 0)].isOnSwitch() and board[(2, 0)].isOnSwitch()
-    assert gameManager.numberOfSwitches() == 2
+    assert board[(1, 0)].isOnSwitch() and board[(2, 0)].isOnSwitch() and board[(0, 0)].isOnSwitch()
+    assert gameManager.numberOfSwitches() == 1
 
 
 def testLoadFromFile():
