@@ -200,8 +200,11 @@ class newLevelWindow(QMessageBox):
     def __init__(self, currentLevel, parent=None):
         super().__init__(parent)
         self.setWindowTitle('Level completed')
-        self.setText('Congratulations!!!\n'
-                     f'You completed level {currentLevel}.')
+        self.setText(
+            "<div style='text-align: center;'>"
+            'Congratulations!!!<br><br>'
+            f'You completed level {currentLevel}.'
+            )
         self.exec()
 
 
@@ -212,9 +215,12 @@ class gameFinishedWindow(QMessageBox):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Game Finished")
-        self.setText('Congratulations!!!'
-                     'You completed the game'
-                     'Do you want to start over?')
+        self.setText(
+            "<div style='text-align: center;'>"
+            'Congratulations!!!<br><br>'
+            'You completed the game<br><br>'
+            'Do you want to start over?'
+            )
         self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         self.restartLevelChoice()
 
