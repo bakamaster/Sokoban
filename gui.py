@@ -203,7 +203,7 @@ class newLevelWindow(QMessageBox):
         self.setText(
             "<div style='text-align: center;'>"
             'Congratulations!!!<br><br>'
-            f'You completed level {currentLevel}.'
+            f'You have completed level {currentLevel}.'
             )
         self.exec()
 
@@ -218,7 +218,7 @@ class gameFinishedWindow(QMessageBox):
         self.setText(
             "<div style='text-align: center;'>"
             'Congratulations!!!<br><br>'
-            'You completed the game.<br><br>'
+            'You have completed the game.<br><br>'
             'Do you want to start over?'
             )
         self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
@@ -239,9 +239,9 @@ class startWindow(QMessageBox):
         self.setText(
             "<div style='text-align: center;'>"
             "Welcome to sokoban!!!<br><br>"
-            "The game has 3 levels but you can load a custom "
-            "one using file option in top right corner.<br><br>"
-            "You need to push all of the boxes to switches.<br><br>"
+            "The game has 3 levels, but you can load a custom "
+            "one using file option in the top right corner.<br><br>"
+            "You need to push all of the boxes to the switches.<br><br>"
             "Guide the character using WSAD."
             )
         self.exec()

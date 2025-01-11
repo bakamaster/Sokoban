@@ -199,7 +199,11 @@ def testMoveMultipleBoxesAndPlayerFromSwitch():
         {coordinates: str(tile) for coordinates, tile in board.items()}
         == {coordinates: str(tile) for coordinates, tile in finalBoard.items()}
         )
-    assert board[(1, 0)].isOnSwitch() and board[(2, 0)].isOnSwitch() and board[(0, 0)].isOnSwitch()
+    assert (
+        board[(1, 0)].isOnSwitch() and
+        board[(2, 0)].isOnSwitch() and
+        board[(0, 0)].isOnSwitch()
+        )
     assert gameManager.numberOfSwitches() == 1
 
 
