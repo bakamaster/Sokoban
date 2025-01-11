@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (QApplication, QMainWindow, QLabel,
                                QSizePolicy, QFileDialog, QMessageBox,
-                               QListWidgetItem)
+                               QListWidgetItem, QFrame)
 from ui_sokoban import Ui_MainWindow
 from copy import deepcopy
 from levelLoader import loadLevel
@@ -55,10 +55,25 @@ class SokobanWindow(QMainWindow):
             "playerOnSwitch": ("Player located on switch",
                                "background-color: darkgreen;")
         }
+        options = [
+            "To restart the level\ngo to level menu or use ctrl+R",
+            "To load custom level\ngo to level menu or use ctrl+L",
+            "Level menu is located\nin top left corner"
+        ]
         for (description, color) in legend.values():
             legendItem = QListWidgetItem()
             legendWidget = QLabel(description)
             legendWidget.setStyleSheet(f'{color} font-size: 30px;')
+            legendItem.setSizeHint(legendWidget.sizeHint())
+            self.ui.legendList.addItem(legendItem)
+            self.ui.legendList.setItemWidget(legendItem, legendWidget)
+        for option in options:
+            legendItem = QListWidgetItem()
+            legendWidget = QLabel(option)
+            legendWidget.setWordWrap(True)
+            legendWidget.setFrameStyle(QFrame.Box)
+            legendWidget.setLineWidth(2)
+            legendWidget.setStyleSheet('font-size: 20px;')
             legendItem.setSizeHint(legendWidget.sizeHint())
             self.ui.legendList.addItem(legendItem)
             self.ui.legendList.setItemWidget(legendItem, legendWidget)
@@ -124,6 +139,7 @@ class SokobanWindow(QMainWindow):
                                                        "Pliki JSON (*.json)")
         self._customPath = path
         self.setFocus()
+        self.clearBoard()
         self.loadLevelToBoard()
 
     def updateLevelInfo(self):
@@ -155,9 +171,6 @@ class SokobanWindow(QMainWindow):
         for (coordinateX, coordinateY), tileType in (
             self._gameManager.tilesToUpdate().items()
         ):
-            previousTile = self.ui.boardLayout.itemAtPosition(coordinateY,
-                                                              coordinateX)
-            previousTile.widget().deleteLater()
             tile = QLabel()
             tile.setStyleSheet(f'background-color: {tileType.getColor()};')
             if str(tileType) == 'player':
