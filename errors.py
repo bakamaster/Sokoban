@@ -60,3 +60,10 @@ class MissingPlayerError(Exception):
         super().__init__('The player is missing')
         if showMessage:
             ErrorMessage("The player is missing from the board")
+
+
+class MultiplePlayerError(Exception):
+    def __init__(self, showMessage=True):
+        super().__init__('There is more than one player on the board')
+        if showMessage:
+            ErrorMessage("There is more than one player on the board")

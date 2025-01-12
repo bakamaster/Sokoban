@@ -2,7 +2,8 @@ import json
 from classes import classSelector
 from errors import (LevelFileIncorrect, LevelFileNotFound,
                     LevelPermissionError, IncorrectBoard,
-                    IncorrectNumberOfSwitches, MissingPlayerError)
+                    IncorrectNumberOfSwitches, MissingPlayerError,
+                    MultiplePlayerError)
 
 """
 Implementation of function that loads level from JSON file.
@@ -62,6 +63,7 @@ def boardCorrectionValidation(board: dict, maxX, maxY,
     Function which checks if board has correct number of switches/boxes and
     if all of the outer tiles are walls.
     """
+    playerCounter = 0
     for (coordinateX, coordinateY), tile in board.items():
         tileType = str(tile)
         if (
@@ -74,7 +76,11 @@ def boardCorrectionValidation(board: dict, maxX, maxY,
             and tileType != 'wall'
         ):
             raise IncorrectBoard((coordinateX, coordinateY), showMessage)
+        if tileType == 'player':
+            playerCounter += 1
     if numberOfSwitches <= 0 or numberOfBoxes != numberOfSwitches:
         raise IncorrectNumberOfSwitches(showMessage)
     elif playerPosition is None:
         raise MissingPlayerError(showMessage)
+    elif playerCounter > 1:
+        raise MultiplePlayerError(showMessage)
