@@ -145,7 +145,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(shortcut)
         self.levelInfo.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:18pt;\">Level</span></p></body></html>", None))
         self.moveInfo.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:18pt;\">Use WSAD to move</span></p></body></html>", None))
-        self.legendLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:18pt;\">Legend: Colors and Their Meaning</span></p></body></html>", None))
+        self.legendLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:18pt;\">Legend: Tile Colors and Instructions</span></p></body></html>", None))
         self.menuLevel.setTitle(QCoreApplication.translate("MainWindow", u"Level menu", None))
     # retranslateUi
 
