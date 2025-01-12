@@ -53,3 +53,10 @@ class TileTypeError(Exception):
             ErrorMessage("The board you were trying to load"
                          "has incorrect structure, it may not "
                          "work as intended!")
+
+
+class MissingPlayerError(Exception):
+    def __init__(self, showMessage=True):
+        super().__init__('The player is missing')
+        if showMessage:
+            ErrorMessage("The player is missing from the board")

@@ -15,11 +15,11 @@ class GameManager():
         self._numberOfSwitches = numberOfSwitches
         self._playerPosition = playerPosition
         self._tiles = {
-            'empty tile': EmptyTile, 'box': Box,
+            'emptyTile': EmptyTile, 'box': Box,
             'player': Player, 'switch': Switch
         }
         self._movementType = {
-            'empty tile': self.moveToEmptyTile, 'box': self.moveToBox,
+            'emptyTile': self.moveToEmptyTile, 'box': self.moveToBox,
             'switch': self.moveToSwitch, 'wall': self.moveToWall
         }
         self._tilesToUpdate = {}

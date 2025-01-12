@@ -47,7 +47,7 @@ class EmptyTile(Tile):
         super().__init__('white')
 
     def __str__(self):
-        return 'empty tile'
+        return 'emptyTile'
 
 
 class Switch(Tile):

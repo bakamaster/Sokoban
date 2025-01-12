@@ -2,7 +2,7 @@ import json
 from classes import classSelector
 from errors import (LevelFileIncorrect, LevelFileNotFound,
                     LevelPermissionError, IncorrectBoard,
-                    IncorrectNumberOfSwitches)
+                    IncorrectNumberOfSwitches, MissingPlayerError)
 
 """
 Implementation of function that loads level from JSON file.
@@ -18,7 +18,7 @@ def loadLevel(path):
     numberOfSwitches = 0
     coordinateY = 0
     numberOfBoxes = 0
-    playerPosition = (0, 0)
+    playerPosition = None
     try:
         with open(path, 'r') as fileHandle:
             data = json.load(fileHandle)
@@ -34,12 +34,13 @@ def loadLevel(path):
                     board[(coordinateX, coordinateY)] = classSelector(tile)
                     coordinateX += 1
                 coordinateY += 1
-        BoardCorrectionValidation(
+        boardCorrectionValidation(
             board,
             coordinateX-1,
             coordinateY-1,
             numberOfSwitches,
-            numberOfBoxes
+            numberOfBoxes,
+            playerPosition
             )
     except FileNotFoundError:
         raise LevelFileNotFound(path)
@@ -53,8 +54,9 @@ def loadLevel(path):
     return board, numberOfSwitches, playerPosition
 
 
-def BoardCorrectionValidation(board: dict, maxX, maxY,
+def boardCorrectionValidation(board: dict, maxX, maxY,
                               numberOfSwitches, numberOfBoxes,
+                              playerPosition,
                               showMessage=True):
     """
     Function which checks if board has correct number of switches/boxes and
@@ -74,3 +76,5 @@ def BoardCorrectionValidation(board: dict, maxX, maxY,
             raise IncorrectBoard((coordinateX, coordinateY), showMessage)
     if numberOfSwitches <= 0 or numberOfBoxes != numberOfSwitches:
         raise IncorrectNumberOfSwitches(showMessage)
+    elif playerPosition is None:
+        raise MissingPlayerError(showMessage)
