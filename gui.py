@@ -159,6 +159,7 @@ class SokobanWindow(QMainWindow):
                                                        "Wybierz plik poziomu",
                                                        "Pliki JSON (*.json)")
         self._customPath = path
+        self.ui.levelInfo.setText('Custom Level')
         self.setFocus()
         self.clearBoard()
         self.loadLevelToBoard()
@@ -219,7 +220,8 @@ class SokobanWindow(QMainWindow):
         self.setFocus()
 
     def GameFinished(self):
-        if gameFinishedWindow():
+        gameFinished = gameFinishedWindow()
+        if gameFinished.choice():
             if self._customPath is None:
                 self._currentLevel = 0
             self.loadLevelToBoard()
@@ -251,6 +253,7 @@ class gameFinishedWindow(QMessageBox):
     """
     def __init__(self, parent=None):
         super().__init__(parent)
+        self._choice = None
         self.setWindowTitle("Game Finished")
         self.setText(
             "<div style='text-align: center;'>"
@@ -261,9 +264,11 @@ class gameFinishedWindow(QMessageBox):
         self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         self.restartLevelChoice()
 
+    def choice(self):
+        return self._choice
+
     def restartLevelChoice(self):
-        result = self.exec()
-        return result == QMessageBox.Yes
+        self._choice = self.exec() == QMessageBox.Yes
 
 
 class startWindow(QMessageBox):
