@@ -6,7 +6,8 @@ from classes import (EmptyTile, Box, Player, Wall,
                      Switch, classSelector, TileTypeError)
 from levelLoader import (loadLevel, boardCorrectionValidation,
                          IncorrectBoard, IncorrectNumberOfSwitches,
-                         LevelFileIncorrect, LevelFileNotFound)
+                         LevelFileIncorrect, LevelFileNotFound,
+                         MissingPlayerError)
 
 
 def testMovePlayerToEmptyTile():
@@ -255,6 +256,21 @@ def testBoardWithouSwitches():
         boardCorrectionValidation(board, 4, 3, 0, 2, (1, 2), showMessage=False)
 
 
+def testBoardWithouPlayer():
+    board = {
+        (0, 0): Wall(), (1, 0): Wall(),
+        (2, 0): Wall(), (3, 0): Wall(), (4, 0): Wall(),
+        (0, 1): Wall(), (1, 1): EmptyTile(),
+        (2, 1): Wall(), (3, 1): Box(), (4, 1): Wall(),
+        (0, 2): Wall(), (1, 2): Player(),
+        (2, 2): EmptyTile(), (3, 2): Switch(), (4, 2): Wall(),
+        (0, 3): Wall(), (1, 3): Wall(),
+        (2, 3): Wall(), (3, 3): Wall(), (4, 3): Wall()
+        }
+    with pytest.raises(MissingPlayerError):
+        boardCorrectionValidation(board, 4, 3, 1, 1, None, showMessage=False)
+
+
 def testBoardWithoutWalls():
     board = {
         (0, 0): Wall(), (1, 0): Wall(),
@@ -267,7 +283,7 @@ def testBoardWithoutWalls():
         (2, 3): Wall(), (3, 3): Wall(), (4, 3): Wall()
         }
     with pytest.raises(IncorrectBoard):
-        boardCorrectionValidation(board, 4, 3, 0, 2, (1, 2), showMessage=False)
+        boardCorrectionValidation(board, 4, 3, 1, 1, (1, 2), showMessage=False)
 
 
 def testLoadNonExistentFile():
