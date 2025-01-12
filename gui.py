@@ -277,7 +277,7 @@ class startWindow(QMessageBox):
             "<div style='text-align: center;'>"
             "Welcome to sokoban!!!<br><br>"
             "The game has 3 levels, but you can load a custom "
-            "one using file option in the top right corner.<br><br>"
+            "one using level menu in the top left corner.<br><br>"
             "You need to push all of the boxes to the switches.<br><br>"
             "Guide the character using WSAD.<br><br>"
             "Your goal is to put all of the boxes on the switches.<br><br>"
